@@ -70,15 +70,7 @@ export default function Login() {
           <Link to="/register">Register Here</Link>
         </div>
 
-        <div className="auth-demo-accounts glass">
-          <h4>💡 Demo Credentials:</h4>
-          <div>
-            <span>Customer:</span> <code>user@store.com</code> / <code>user123</code>
-          </div>
-          <div>
-            <span>Administrator:</span> <code>admin@store.com</code> / <code>admin123</code>
-          </div>
-        </div>
+        
       </div>
     </div>
   );
