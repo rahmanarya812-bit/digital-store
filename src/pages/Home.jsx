@@ -38,7 +38,7 @@ export default function Home() {
         <div className="hero-content animate-fadeIn">
           <span className="hero-tagline">⚡ Next-Gen Digital Marketplace</span>
           <h1 className="hero-title">
-            Selamat Datang Di Marketplase <span className="text-glow">ARYA STORE</span> Digital Assets
+            Selamat Datang Di Marketplase <span className="text-glow">ARYA STORE</span> Menyediakan Kebutuhan Premium
           </h1>
           <p className="hero-desc">
             Kebutuhan Aplikasi premium , jasa joki tugas , jasa  editing , jasa Kebutuhan sosial Media
