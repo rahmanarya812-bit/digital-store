@@ -733,6 +733,7 @@
   }
   .form-grid-2,
   .form-grid-3,
+  .form-grid-4,
   .tier-row {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -751,4 +752,11 @@
   .btn-cancel-light {
     width: 100%;
   }
+}
+
+.form-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
 }

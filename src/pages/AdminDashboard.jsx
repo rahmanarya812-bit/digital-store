@@ -5,6 +5,23 @@ import { orderService } from '../services/orderService';
 import { productService } from '../services/productService';
 import './AdminDashboard.css';
 
+const STOCK_FORM_OPTIONS = [
+  'Tidak Ada', 'alibaba', 'am', 'applecode', 'appmus', 'aws', 'bmfacebook',
+  'bstation', 'camscanner', 'canva', 'canvainvite', 'capcut', 'capcutpro',
+  'chatgpt', 'claudeai', 'custom', 'cvv', 'default', 'default-with-addinfo',
+  'disney', 'disneyshare', 'do', 'dramabox', 'expressvpn', 'facebook',
+  'ghs', 'gmail', 'grammarly'
+];
+
+const getStockFormFormat = (opt) => {
+  if (opt === 'Tidak Ada') return null;
+  if (opt === 'default') return 'email | password';
+  if (opt === 'default-with-addinfo') return 'email | password | info';
+  if (opt === 'applecode') return 'code';
+  if (opt === 'cvv') return 'card_number | exp_month | exp_year | cvv';
+  return 'email | password';
+};
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -168,7 +185,7 @@ export default function AdminDashboard() {
     // New fields
     setProdCode('');
     setProdUseVariations(false);
-    setProdStockForm('Manual');
+    setProdStockForm('Tidak Ada');
     setProdEditStockMode(false);
     setProdAccountsStock('');
     setProdTerms('');
@@ -198,7 +215,7 @@ export default function AdminDashboard() {
     // New fields
     setProdCode(prod.code || '');
     setProdUseVariations(prod.useVariations || false);
-    setProdStockForm(prod.stockForm || 'Manual');
+    setProdStockForm(prod.stockForm || 'Tidak Ada');
     setProdEditStockMode(prod.editStockMode || false);
     setProdAccountsStock(prod.accountsStock || '');
     setProdTerms(prod.termsAndConditions || '');
@@ -226,6 +243,11 @@ export default function AdminDashboard() {
 
   const handleSaveProduct = async (e) => {
     e.preventDefault();
+    
+    // Auto-calculate stock if automatic stock form is selected
+    const lines = prodAccountsStock.split('\n').filter(line => line.trim() !== '');
+    const calculatedStock = prodStockForm !== 'Tidak Ada' ? lines.length : (prodStock !== '' ? Number(prodStock) : 99);
+
     const data = {
       name: prodName,
       category: prodCategory,
@@ -235,7 +257,7 @@ export default function AdminDashboard() {
       format: prodFormat,
       version: prodVersion,
       description: prodDescription,
-      stock: prodStock !== '' ? Number(prodStock) : 99,
+      stock: calculatedStock,
 
       // New fields
       code: prodCode,
@@ -597,36 +619,67 @@ export default function AdminDashboard() {
               <div className="form-group-light">
                 <label>Form Stock</label>
                 <select value={prodStockForm} onChange={e => setProdStockForm(e.target.value)}>
-                  <option value="Manual">Manual</option>
-                  <option value="Otomatis">Otomatis</option>
+                  {STOCK_FORM_OPTIONS.map(opt => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
                 </select>
               </div>
 
-              {/* Row 4: Mode Edit Stock Toggle */}
-              <div className="form-group-light toggle-row">
-                <label className="switch-container">
-                  <span className="label-text">Mode Edit Stock (ganti semua)</span>
-                  <div className="switch-wrapper">
-                    <input 
-                      type="checkbox" 
-                      checked={prodEditStockMode} 
-                      onChange={e => setProdEditStockMode(e.target.checked)} 
-                    />
-                    <span className="switch-slider"></span>
-                  </div>
-                </label>
-              </div>
+              {/* Blue Info Box showing active format */}
+              {prodStockForm !== 'Tidak Ada' && (
+                <div className="info-box-light" style={{
+                  background: '#e8f0fe',
+                  border: '1px solid #d2e3fc',
+                  color: '#1a73e8',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.88rem',
+                  fontWeight: '500',
+                  marginTop: '-0.75rem',
+                  marginBottom: '0.5rem'
+                }}>
+                  <span>ℹ️ Format: {getStockFormFormat(prodStockForm)}</span>
+                </div>
+              )}
+
+              {/* Row 4: Mode Edit Stock Toggle (only shown when editing an existing product and using stock form) */}
+              {editingProduct && prodStockForm !== 'Tidak Ada' && (
+                <div className="form-group-light toggle-row">
+                  <label className="switch-container">
+                    <span className="label-text">Mode Edit Stock (ganti semua)</span>
+                    <div className="switch-wrapper">
+                      <input 
+                        type="checkbox" 
+                        checked={prodEditStockMode} 
+                        onChange={e => setProdEditStockMode(e.target.checked)} 
+                      />
+                      <span className="switch-slider"></span>
+                    </div>
+                  </label>
+                </div>
+              )}
 
               {/* Row 5: Tambah Stock Akun Textarea */}
-              <div className="form-group-light">
-                <label>Tambah Stock Akun</label>
-                <textarea 
-                  rows="3" 
-                  value={prodAccountsStock} 
-                  onChange={e => setProdAccountsStock(e.target.value)} 
-                  placeholder="Masukkan data akun lisensi per baris..."
-                ></textarea>
-              </div>
+              {prodStockForm !== 'Tidak Ada' && (
+                <div className="form-group-light">
+                  <label>
+                    {editingProduct && !prodEditStockMode ? 'Preview Akun Tersimpan' : 'Tambah Stock Akun'}
+                  </label>
+                  <textarea 
+                    rows="5" 
+                    value={prodAccountsStock} 
+                    onChange={e => setProdAccountsStock(e.target.value)} 
+                    readOnly={editingProduct && !prodEditStockMode}
+                    placeholder={`Masukkan data akun lisensi per baris...\nFormat: ${getStockFormFormat(prodStockForm)}`}
+                  ></textarea>
+                  <div style={{ marginTop: '0.25rem', fontSize: '0.82rem', color: '#5f6368', fontWeight: '500' }}>
+                    Terdeteksi: <strong>{prodAccountsStock.split('\n').filter(l => l.trim() !== '').length} Akun</strong> (Stok otomatis dihitung dari jumlah baris akun).
+                  </div>
+                </div>
+              )}
 
               {/* Row 6: Deskripsi */}
               <div className="form-group-light">
@@ -681,7 +734,7 @@ export default function AdminDashboard() {
               </div>
 
               {/* Row 10: Harga Jual, Profit, Mode Bulking */}
-              <div className="form-grid-3">
+              <div className={prodStockForm === 'Tidak Ada' ? "form-grid-4" : "form-grid-3"}>
                 <div className="form-group-light">
                   <label>Harga Jual (Rp)</label>
                   <input 
@@ -713,6 +766,18 @@ export default function AdminDashboard() {
                   </div>
                   <small className="help-text">Default 0 = non-bulk</small>
                 </div>
+                {prodStockForm === 'Tidak Ada' && (
+                  <div className="form-group-light">
+                    <label>Stok Manual</label>
+                    <input 
+                      type="number" 
+                      required 
+                      value={prodStock} 
+                      onChange={e => setProdStock(e.target.value)} 
+                      placeholder="e.g. 10, 50, 0" 
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Row 11: Tier Harga Grosir */}
