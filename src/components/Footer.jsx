@@ -15,7 +15,7 @@ export default function Footer() {
               <a href="#" aria-label="GitHub"><FiGithub size={18} /></a>
               <a href="#" aria-label="Twitter"><FiTwitter size={18} /></a>
               <a href="#" aria-label="Instagram"><FiInstagram size={18} /></a>
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp size={18} /></a>
+              <a href="https://wa.me/6285607492894" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp size={18} /></a>
               <a href="#" aria-label="Mail"><FiMail size={18} /></a>
             </div>
           </div>

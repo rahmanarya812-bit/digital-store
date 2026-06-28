@@ -23,7 +23,20 @@ export const products = [
     "fileSize": "25 GB",
     "format": "Video / Notebooks / Datasets",
     "version": "2026 Updated",
-    "stock": 13
+    "stock": 13,
+    "code": "PRD-0010",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 4,
@@ -49,7 +62,20 @@ export const products = [
     "fileSize": "15 GB",
     "format": "Video / Project Files",
     "version": "2026 Updated",
-    "stock": 6
+    "stock": 6,
+    "code": "PRD-0004",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 7,
@@ -75,7 +101,20 @@ export const products = [
     "fileSize": "1.8 GB",
     "format": "Windows / Mac / Linux",
     "version": "2.0.0",
-    "stock": 0
+    "stock": 0,
+    "code": "PRD-0007",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 3,
@@ -101,7 +140,20 @@ export const products = [
     "fileSize": "180 MB",
     "format": "React / Vue / Figma",
     "version": "1.5.0",
-    "stock": 17
+    "stock": 17,
+    "code": "PRD-0003",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 15,
@@ -127,7 +179,20 @@ export const products = [
     "fileSize": "280 MB",
     "format": "Next.js + Stripe",
     "version": "2.3.0",
-    "stock": 5
+    "stock": 5,
+    "code": "PRD-0015",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 1,
@@ -153,7 +218,20 @@ export const products = [
     "fileSize": "2.4 GB",
     "format": "Windows / Mac / Linux",
     "version": "3.2.1",
-    "stock": 15
+    "stock": 15,
+    "code": "PRD-0001",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 11,
@@ -179,7 +257,20 @@ export const products = [
     "fileSize": "18 MB",
     "format": "WordPress Plugin",
     "version": "5.0.2",
-    "stock": 5
+    "stock": 5,
+    "code": "PRD-0011",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 16,
@@ -205,7 +296,20 @@ export const products = [
     "fileSize": "12 GB",
     "format": "Video / Figma Files",
     "version": "2026 Updated",
-    "stock": 10
+    "stock": 10,
+    "code": "PRD-0016",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 9,
@@ -231,7 +335,20 @@ export const products = [
     "fileSize": "220 MB",
     "format": "React + TypeScript",
     "version": "3.1.0",
-    "stock": 21
+    "stock": 21,
+    "code": "PRD-0009",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 2,
@@ -257,7 +374,20 @@ export const products = [
     "fileSize": "45 MB",
     "format": "PDF / EPUB / MOBI",
     "version": "2nd Edition",
-    "stock": 7
+    "stock": 7,
+    "code": "PRD-0002",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 13,
@@ -283,7 +413,20 @@ export const products = [
     "fileSize": "890 MB",
     "format": "Windows / Mac / Linux / Mobile",
     "version": "6.0.1",
-    "stock": 9
+    "stock": 9,
+    "code": "PRD-0013",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 12,
@@ -309,7 +452,20 @@ export const products = [
     "fileSize": "2.1 GB",
     "format": "AE / PR / DR",
     "version": "1.2",
-    "stock": 24
+    "stock": 24,
+    "code": "PRD-0012",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 5,
@@ -335,7 +491,20 @@ export const products = [
     "fileSize": "12 MB",
     "format": "WordPress Plugin",
     "version": "4.1.0",
-    "stock": 5
+    "stock": 5,
+    "code": "PRD-0005",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 14,
@@ -361,7 +530,20 @@ export const products = [
     "fileSize": "52 MB",
     "format": "PDF / EPUB / MOBI",
     "version": "2nd Edition",
-    "stock": 16
+    "stock": 16,
+    "code": "PRD-0014",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 6,
@@ -387,7 +569,20 @@ export const products = [
     "fileSize": "350 MB",
     "format": "SVG / PNG / Icon Font",
     "version": "2.0",
-    "stock": 30
+    "stock": 30,
+    "code": "PRD-0006",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 8,
@@ -413,7 +608,20 @@ export const products = [
     "fileSize": "38 MB",
     "format": "PDF / EPUB",
     "version": "1st Edition",
-    "stock": 18
+    "stock": 18,
+    "code": "PRD-0008",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 17,
@@ -436,7 +644,20 @@ export const products = [
     "features": [
       "Instant Activation",
       "Lifetime updates"
-    ]
+    ],
+    "code": "PRD-0017",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 18,
@@ -459,7 +680,20 @@ export const products = [
     "features": [
       "Instant Activation",
       "Lifetime updates"
-    ]
+    ],
+    "code": "PRD-0018",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   },
   {
     "id": 19,
@@ -482,6 +716,19 @@ export const products = [
     "features": [
       "Instant Activation",
       "Lifetime updates"
-    ]
+    ],
+    "code": "PRD-0019",
+    "useVariations": false,
+    "stockForm": "Manual",
+    "editStockMode": false,
+    "accountsStock": "",
+    "termsAndConditions": "Syarat & Ketentuan Lisensi Digital berlaku.",
+    "requireNote": "Tidak",
+    "cashbackType": "Potongan Nominal",
+    "cashbackValue": 0,
+    "profit": 0,
+    "bulkingMode": 0,
+    "wholesaleTiers": [],
+    "isVisible": true
   }
 ];

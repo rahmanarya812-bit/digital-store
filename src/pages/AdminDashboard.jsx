@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FiDownload, FiDollarSign, FiCpu, FiShoppingBag, FiActivity } from 'react-icons/fi';
+import { FiDownload, FiDollarSign, FiCpu, FiShoppingBag, FiActivity, FiUpload, FiPlus, FiTrash, FiCheck } from 'react-icons/fi';
 import { adminService } from '../services/adminService';
 import { orderService } from '../services/orderService';
 import { productService } from '../services/productService';
@@ -27,6 +27,22 @@ export default function AdminDashboard() {
   const [prodVersion, setProdVersion] = useState('');
   const [prodDescription, setProdDescription] = useState('');
   const [prodStock, setProdStock] = useState('');
+
+  // New fields
+  const [prodCode, setProdCode] = useState('');
+  const [prodUseVariations, setProdUseVariations] = useState(false);
+  const [prodStockForm, setProdStockForm] = useState('Manual');
+  const [prodEditStockMode, setProdEditStockMode] = useState(false);
+  const [prodAccountsStock, setProdAccountsStock] = useState('');
+  const [prodTerms, setProdTerms] = useState('');
+  const [prodRequireNote, setProdRequireNote] = useState('Tidak');
+  const [prodCashbackType, setProdCashbackType] = useState('Potongan Nominal');
+  const [prodCashbackValue, setProdCashbackValue] = useState(0);
+  const [prodProfit, setProdProfit] = useState(0);
+  const [prodBulkingMode, setProdBulkingMode] = useState(0);
+  const [prodWholesaleTiers, setProdWholesaleTiers] = useState([]);
+  const [prodIsVisible, setProdIsVisible] = useState(true);
+  const [prodImage, setProdImage] = useState('');
 
   const fetchStats = () => {
     adminService.getStats()
@@ -112,6 +128,31 @@ export default function AdminDashboard() {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProdImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddTier = () => {
+    setProdWholesaleTiers([...prodWholesaleTiers, { minQty: 1, price: 0 }]);
+  };
+
+  const handleUpdateTier = (index, field, value) => {
+    const updated = [...prodWholesaleTiers];
+    updated[index][field] = Number(value);
+    setProdWholesaleTiers(updated);
+  };
+
+  const handleRemoveTier = (index) => {
+    setProdWholesaleTiers(prodWholesaleTiers.filter((_, i) => i !== index));
+  };
+
   const openCreateModal = () => {
     setEditingProduct(null);
     setProdName('');
@@ -123,6 +164,22 @@ export default function AdminDashboard() {
     setProdVersion('');
     setProdDescription('');
     setProdStock('99');
+
+    // New fields
+    setProdCode('');
+    setProdUseVariations(false);
+    setProdStockForm('Manual');
+    setProdEditStockMode(false);
+    setProdAccountsStock('');
+    setProdTerms('');
+    setProdRequireNote('Tidak');
+    setProdCashbackType('Potongan Nominal');
+    setProdCashbackValue(0);
+    setProdProfit(0);
+    setProdBulkingMode(0);
+    setProdWholesaleTiers([]);
+    setProdIsVisible(true);
+    setProdImage('');
     setIsModalOpen(true);
   };
 
@@ -137,6 +194,22 @@ export default function AdminDashboard() {
     setProdVersion(prod.version || '');
     setProdDescription(prod.description || '');
     setProdStock(prod.stock !== undefined ? String(prod.stock) : '99');
+
+    // New fields
+    setProdCode(prod.code || '');
+    setProdUseVariations(prod.useVariations || false);
+    setProdStockForm(prod.stockForm || 'Manual');
+    setProdEditStockMode(prod.editStockMode || false);
+    setProdAccountsStock(prod.accountsStock || '');
+    setProdTerms(prod.termsAndConditions || '');
+    setProdRequireNote(prod.requireNote || 'Tidak');
+    setProdCashbackType(prod.cashbackType || 'Potongan Nominal');
+    setProdCashbackValue(prod.cashbackValue !== undefined ? prod.cashbackValue : 0);
+    setProdProfit(prod.profit !== undefined ? prod.profit : 0);
+    setProdBulkingMode(prod.bulkingMode !== undefined ? prod.bulkingMode : 0);
+    setProdWholesaleTiers(prod.wholesaleTiers || []);
+    setProdIsVisible(prod.isVisible !== undefined ? prod.isVisible : true);
+    setProdImage(prod.image || '');
     setIsModalOpen(true);
   };
 
@@ -162,7 +235,23 @@ export default function AdminDashboard() {
       format: prodFormat,
       version: prodVersion,
       description: prodDescription,
-      stock: prodStock !== '' ? Number(prodStock) : 99
+      stock: prodStock !== '' ? Number(prodStock) : 99,
+
+      // New fields
+      code: prodCode,
+      useVariations: prodUseVariations,
+      stockForm: prodStockForm,
+      editStockMode: prodEditStockMode,
+      accountsStock: prodAccountsStock,
+      termsAndConditions: prodTerms,
+      requireNote: prodRequireNote,
+      cashbackType: prodCashbackType,
+      cashbackValue: Number(prodCashbackValue),
+      profit: Number(prodProfit),
+      bulkingMode: Number(prodBulkingMode),
+      wholesaleTiers: prodWholesaleTiers,
+      isVisible: prodIsVisible,
+      image: prodImage
     };
 
     try {
@@ -425,58 +514,270 @@ export default function AdminDashboard() {
 
       {/* CRUD Modal Dialog */}
       {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content glass">
-            <h2>{editingProduct ? '📝 Edit Product' : '➕ Create New Product'}</h2>
-            <form onSubmit={handleSaveProduct} className="modal-form">
-              <div className="form-grid">
-                <div className="form-group">
-                  <label>Product Name</label>
-                  <input type="text" required value={prodName} onChange={e => setProdName(e.target.value)} placeholder="e.g. Photoshop Pro extension" />
+        <div className="modal-overlay custom-light-modal">
+          <div className="modal-content-light">
+            <div className="modal-header-light">
+              <h2>{editingProduct ? 'Edit Produk' : 'Tambah Produk'}</h2>
+            </div>
+            
+            <form onSubmit={handleSaveProduct} className="new-product-form">
+              {/* Row 1: Thumbnail & Basic Info */}
+              <div className="form-row-top">
+                <div className="thumbnail-upload-box">
+                  <label htmlFor="thumbnail-file" className="thumbnail-label">
+                    {prodImage ? (
+                      <img src={prodImage} alt="Thumbnail Preview" className="thumbnail-preview-img" />
+                    ) : (
+                      <div className="upload-placeholder">
+                        <FiUpload size={32} className="upload-icon" />
+                        <span>Thumbnail</span>
+                      </div>
+                    )}
+                  </label>
+                  <input 
+                    type="file" 
+                    id="thumbnail-file" 
+                    accept="image/*" 
+                    onChange={handleImageChange} 
+                    style={{ display: 'none' }} 
+                  />
                 </div>
-                <div className="form-group">
-                  <label>Category</label>
-                  <select value={prodCategory} onChange={e => setProdCategory(e.target.value)}>
-                    <option value="software">Software</option>
-                    <option value="ebook">Ebook</option>
-                    <option value="template">Template</option>
-                    <option value="course">Course</option>
-                    <option value="plugin">Plugin</option>
-                    <option value="asset">Digital Asset</option>
+
+                <div className="basic-info-fields">
+                  <div className="form-group-light">
+                    <label>Kode Produk</label>
+                    <input 
+                      type="text" 
+                      required 
+                      value={prodCode} 
+                      onChange={e => setProdCode(e.target.value)} 
+                      placeholder="Masukkan kode produk..." 
+                    />
+                  </div>
+                  <div className="form-group-light">
+                    <label>Kategori</label>
+                    <select value={prodCategory} onChange={e => setProdCategory(e.target.value)}>
+                      <option value="software">Software</option>
+                      <option value="ebook">Ebook</option>
+                      <option value="template">Template</option>
+                      <option value="course">Course</option>
+                      <option value="plugin">Plugin</option>
+                      <option value="asset">Digital Asset</option>
+                    </select>
+                  </div>
+                  <div className="form-group-light">
+                    <label>Nama Produk</label>
+                    <input 
+                      type="text" 
+                      required 
+                      value={prodName} 
+                      onChange={e => setProdName(e.target.value)} 
+                      placeholder="Masukkan nama produk..." 
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Gunakan Variasi Toggle */}
+              <div className="form-group-light toggle-row">
+                <label className="switch-container">
+                  <span className="label-text">Gunakan variasi produk</span>
+                  <div className="switch-wrapper">
+                    <input 
+                      type="checkbox" 
+                      checked={prodUseVariations} 
+                      onChange={e => setProdUseVariations(e.target.checked)} 
+                    />
+                    <span className="switch-slider"></span>
+                  </div>
+                </label>
+              </div>
+
+              {/* Row 3: Form Stock Selector */}
+              <div className="form-group-light">
+                <label>Form Stock</label>
+                <select value={prodStockForm} onChange={e => setProdStockForm(e.target.value)}>
+                  <option value="Manual">Manual</option>
+                  <option value="Otomatis">Otomatis</option>
+                </select>
+              </div>
+
+              {/* Row 4: Mode Edit Stock Toggle */}
+              <div className="form-group-light toggle-row">
+                <label className="switch-container">
+                  <span className="label-text">Mode Edit Stock (ganti semua)</span>
+                  <div className="switch-wrapper">
+                    <input 
+                      type="checkbox" 
+                      checked={prodEditStockMode} 
+                      onChange={e => setProdEditStockMode(e.target.checked)} 
+                    />
+                    <span className="switch-slider"></span>
+                  </div>
+                </label>
+              </div>
+
+              {/* Row 5: Tambah Stock Akun Textarea */}
+              <div className="form-group-light">
+                <label>Tambah Stock Akun</label>
+                <textarea 
+                  rows="3" 
+                  value={prodAccountsStock} 
+                  onChange={e => setProdAccountsStock(e.target.value)} 
+                  placeholder="Masukkan data akun lisensi per baris..."
+                ></textarea>
+              </div>
+
+              {/* Row 6: Deskripsi */}
+              <div className="form-group-light">
+                <label>Deskripsi</label>
+                <textarea 
+                  rows="2" 
+                  required 
+                  value={prodDescription} 
+                  onChange={e => setProdDescription(e.target.value)} 
+                  placeholder="Masukkan deskripsi produk..."
+                ></textarea>
+              </div>
+
+              {/* Row 7: Syarat & Ketentuan */}
+              <div className="form-group-light">
+                <label>Syarat & Ketentuan</label>
+                <textarea 
+                  rows="2" 
+                  value={prodTerms} 
+                  onChange={e => setProdTerms(e.target.value)} 
+                  placeholder="Masukkan syarat & ketentuan lisensi..."
+                ></textarea>
+              </div>
+
+              {/* Row 8: Wajibkan Catatan Seller Dropdown */}
+              <div className="form-group-light">
+                <label>Wajibkan Catatan Seller</label>
+                <select value={prodRequireNote} onChange={e => setProdRequireNote(e.target.value)}>
+                  <option value="Tidak">Tidak</option>
+                  <option value="Ya">Ya</option>
+                </select>
+              </div>
+
+              {/* Row 9: Tipe Cashback & Cashback Value */}
+              <div className="form-grid-2">
+                <div className="form-group-light">
+                  <label>Tipe Cashback</label>
+                  <select value={prodCashbackType} onChange={e => setProdCashbackType(e.target.value)}>
+                    <option value="Potongan Nominal">Potongan Nominal</option>
+                    <option value="Persentase">Persentase</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Price (Rp)</label>
-                  <input type="number" required value={prodPrice} onChange={e => setProdPrice(e.target.value)} placeholder="Price in Rupiah" />
-                </div>
-                <div className="form-group">
-                  <label>Original Price (Rp, Optional)</label>
-                  <input type="number" value={prodOriginalPrice} onChange={e => setProdOriginalPrice(e.target.value)} placeholder="Original Price" />
-                </div>
-                <div className="form-group">
-                  <label>File Size</label>
-                  <input type="text" value={prodFileSize} onChange={e => setProdFileSize(e.target.value)} placeholder="e.g. 45 MB, 1.2 GB" />
-                </div>
-                <div className="form-group">
-                  <label>Format</label>
-                  <input type="text" value={prodFormat} onChange={e => setProdFormat(e.target.value)} placeholder="e.g. ZIP, PDF, Installer" />
-                </div>
-                <div className="form-group">
-                  <label>Version</label>
-                  <input type="text" value={prodVersion} onChange={e => setProdVersion(e.target.value)} placeholder="e.g. 1.0.0, 3.2" />
-                </div>
-                <div className="form-group">
-                  <label>Stock / Stok Kuantitas</label>
-                  <input type="number" required value={prodStock} onChange={e => setProdStock(e.target.value)} placeholder="e.g. 10, 50, 0" />
+                <div className="form-group-light">
+                  <label>Cashback {prodCashbackType === 'Persentase' ? '(%)' : '(Rp)'}</label>
+                  <input 
+                    type="number" 
+                    value={prodCashbackValue} 
+                    onChange={e => setProdCashbackValue(e.target.value)} 
+                    placeholder="0" 
+                  />
                 </div>
               </div>
-              <div className="form-group">
-                <label>Description</label>
-                <textarea rows="3" value={prodDescription} onChange={e => setProdDescription(e.target.value)} placeholder="Details description of the product..."></textarea>
+
+              {/* Row 10: Harga Jual, Profit, Mode Bulking */}
+              <div className="form-grid-3">
+                <div className="form-group-light">
+                  <label>Harga Jual (Rp)</label>
+                  <input 
+                    type="number" 
+                    required 
+                    value={prodPrice} 
+                    onChange={e => setProdPrice(e.target.value)} 
+                    placeholder="0" 
+                  />
+                </div>
+                <div className="form-group-light">
+                  <label>Profit (Rp)</label>
+                  <input 
+                    type="number" 
+                    value={prodProfit} 
+                    onChange={e => setProdProfit(e.target.value)} 
+                    placeholder="0" 
+                  />
+                </div>
+                <div className="form-group-light">
+                  <div className="input-with-label-row">
+                    <label>Mode Bulking</label>
+                    <input 
+                      type="number" 
+                      value={prodBulkingMode} 
+                      onChange={e => setProdBulkingMode(e.target.value)} 
+                      placeholder="0" 
+                    />
+                  </div>
+                  <small className="help-text">Default 0 = non-bulk</small>
+                </div>
               </div>
-              <div className="modal-actions">
-                <button type="submit" className="btn btn-primary">Save Product</button>
-                <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(false)}>Cancel</button>
+
+              {/* Row 11: Tier Harga Grosir */}
+              <div className="wholesale-tiers-section">
+                <div className="wholesale-header">
+                  <h3>⭐ Tier Harga Grosir</h3>
+                  <button type="button" className="btn-add-tier" onClick={handleAddTier}>
+                    <FiPlus /> Tambah Tier
+                  </button>
+                </div>
+                {prodWholesaleTiers.length === 0 ? (
+                  <p className="no-tiers-text">Belum ada tier grosir. Klik Tambah Tier untuk memberikan diskon kuantitas.</p>
+                ) : (
+                  <div className="tiers-list">
+                    {prodWholesaleTiers.map((tier, idx) => (
+                      <div key={idx} className="tier-row">
+                        <div className="form-group-light">
+                          <label>Min Kuantitas</label>
+                          <input 
+                            type="number" 
+                            value={tier.minQty} 
+                            onChange={e => handleUpdateTier(idx, 'minQty', e.target.value)} 
+                            min="1" 
+                          />
+                        </div>
+                        <div className="form-group-light">
+                          <label>Harga Grosir (Rp)</label>
+                          <input 
+                            type="number" 
+                            value={tier.price} 
+                            onChange={e => handleUpdateTier(idx, 'price', e.target.value)} 
+                          />
+                        </div>
+                        <button type="button" className="btn-delete-tier" onClick={() => handleRemoveTier(idx)}>
+                          <FiTrash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Row 12: Tampilkan Produk Toggle */}
+              <div className="form-group-light toggle-row last-toggle-row">
+                <label className="switch-container">
+                  <span className="label-text">👁️ Tampilkan Produk</span>
+                  <div className="switch-wrapper">
+                    <input 
+                      type="checkbox" 
+                      checked={prodIsVisible} 
+                      onChange={e => setProdIsVisible(e.target.checked)} 
+                    />
+                    <span className="switch-slider"></span>
+                  </div>
+                </label>
+              </div>
+
+              {/* Form Buttons */}
+              <div className="modal-actions-light">
+                <button type="submit" className="btn-submit-light">
+                  <FiCheck /> {editingProduct ? 'Simpan Produk' : 'Buat Produk'}
+                </button>
+                <button type="button" className="btn-cancel-light" onClick={() => setIsModalOpen(false)}>
+                  Batal
+                </button>
               </div>
             </form>
           </div>

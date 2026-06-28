@@ -20,7 +20,12 @@ export default function handler(req, res) {
 
   // POST: Create a product
   if (req.method === 'POST') {
-    const { name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock } = req.body || {};
+    const { 
+      name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock,
+      code, useVariations, stockForm, editStockMode, accountsStock, termsAndConditions, requireNote,
+      cashbackType, cashbackValue, profit, bulkingMode, wholesaleTiers, isVisible, image
+    } = req.body || {};
+
     if (!name || !category || !price) {
       return res.status(400).json({ error: 'Name, Category and Price are required' });
     }
@@ -36,13 +41,28 @@ export default function handler(req, res) {
       format: format || 'Digital Download',
       version: version || '1.0.0',
       fileSize: fileSize || 'Unknown',
-      image: category === 'software' ? '/products/software.jpg' : category === 'ebook' ? '/products/ebook.jpg' : category === 'template' ? '/products/template.jpg' : category === 'course' ? '/products/course.jpg' : category === 'plugin' ? '/products/plugin.jpg' : '/products/assets.jpg',
+      image: image || (category === 'software' ? '/products/software.jpg' : category === 'ebook' ? '/products/ebook.jpg' : category === 'template' ? '/products/template.jpg' : category === 'course' ? '/products/course.jpg' : category === 'plugin' ? '/products/plugin.jpg' : '/products/assets.jpg'),
       rating: 5.0,
       reviews: 0,
       downloads: 0,
       stock: stock !== undefined && stock !== '' ? Number(stock) : 99,
       badge: 'New',
-      features: ['Instant Activation', 'Lifetime updates']
+      features: ['Instant Activation', 'Lifetime updates'],
+      
+      // New fields
+      code: code || `PRD-${String(Date.now()).slice(-4)}`,
+      useVariations: useVariations !== undefined ? Boolean(useVariations) : false,
+      stockForm: stockForm || 'Manual',
+      editStockMode: editStockMode !== undefined ? Boolean(editStockMode) : false,
+      accountsStock: accountsStock || '',
+      termsAndConditions: termsAndConditions || '',
+      requireNote: requireNote || 'Tidak',
+      cashbackType: cashbackType || 'Potongan Nominal',
+      cashbackValue: cashbackValue !== undefined ? Number(cashbackValue) : 0,
+      profit: profit !== undefined ? Number(profit) : 0,
+      bulkingMode: bulkingMode !== undefined ? Number(bulkingMode) : 0,
+      wholesaleTiers: wholesaleTiers || [],
+      isVisible: isVisible !== undefined ? Boolean(isVisible) : true
     };
     products.push(newProduct);
     saveProducts();
@@ -51,7 +71,11 @@ export default function handler(req, res) {
 
   // PUT: Edit a product
   if (req.method === 'PUT') {
-    const { id, name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock } = req.body || {};
+    const { 
+      id, name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock,
+      code, useVariations, stockForm, editStockMode, accountsStock, termsAndConditions, requireNote,
+      cashbackType, cashbackValue, profit, bulkingMode, wholesaleTiers, isVisible, image
+    } = req.body || {};
     if (!id) return res.status(400).json({ error: 'Product ID is required for editing' });
     
     const index = products.findIndex(p => p.id === Number(id));
@@ -68,7 +92,23 @@ export default function handler(req, res) {
       format: format || products[index].format,
       version: version || products[index].version,
       fileSize: fileSize || products[index].fileSize,
-      stock: stock !== undefined && stock !== '' ? Number(stock) : products[index].stock
+      stock: stock !== undefined && stock !== '' ? Number(stock) : products[index].stock,
+      image: image !== undefined ? image : products[index].image,
+
+      // New fields
+      code: code !== undefined ? code : products[index].code,
+      useVariations: useVariations !== undefined ? Boolean(useVariations) : products[index].useVariations,
+      stockForm: stockForm !== undefined ? stockForm : products[index].stockForm,
+      editStockMode: editStockMode !== undefined ? Boolean(editStockMode) : products[index].editStockMode,
+      accountsStock: accountsStock !== undefined ? accountsStock : products[index].accountsStock,
+      termsAndConditions: termsAndConditions !== undefined ? termsAndConditions : products[index].termsAndConditions,
+      requireNote: requireNote !== undefined ? requireNote : products[index].requireNote,
+      cashbackType: cashbackType !== undefined ? cashbackType : products[index].cashbackType,
+      cashbackValue: cashbackValue !== undefined ? Number(cashbackValue) : products[index].cashbackValue,
+      profit: profit !== undefined ? Number(profit) : products[index].profit,
+      bulkingMode: bulkingMode !== undefined ? Number(bulkingMode) : products[index].bulkingMode,
+      wholesaleTiers: wholesaleTiers !== undefined ? wholesaleTiers : products[index].wholesaleTiers,
+      isVisible: isVisible !== undefined ? Boolean(isVisible) : products[index].isVisible
     };
     saveProducts();
     return res.status(200).json({ product: products[index] });
