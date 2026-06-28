@@ -3,9 +3,17 @@ import path from 'path';
 
 const getDbPath = () => path.join(process.cwd(), 'api', '_data', 'products.json');
 
+// Global memory cache to support read-only filesystems (like Vercel)
+let memoryProducts = null;
+
 export const getProducts = () => {
+  if (memoryProducts) {
+    return memoryProducts;
+  }
+
   try {
     const filePath = getDbPath();
+    let list = [];
     if (!fs.existsSync(filePath)) {
       const jsPath = path.join(process.cwd(), 'api', '_data', 'products.js');
       if (fs.existsSync(jsPath)) {
@@ -14,13 +22,15 @@ export const getProducts = () => {
         const endIdx = content.lastIndexOf(']') + 1;
         if (startIdx !== -1 && endIdx !== -1) {
           const jsonText = content.substring(startIdx, endIdx);
-          fs.writeFileSync(filePath, jsonText, 'utf8');
-          return JSON.parse(jsonText);
+          list = JSON.parse(jsonText);
         }
       }
-      return [];
+    } else {
+      list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     }
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    
+    memoryProducts = list;
+    return list;
   } catch (err) {
     console.error('DB Read Error:', err);
     return [];
@@ -28,6 +38,8 @@ export const getProducts = () => {
 };
 
 export const saveProducts = (products) => {
+  memoryProducts = products;
+  
   try {
     const filePath = getDbPath();
     fs.writeFileSync(filePath, JSON.stringify(products, null, 2), 'utf8');
