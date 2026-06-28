@@ -1,5 +1,5 @@
 import { getAuthUser } from '../_utils/auth.js';
-import { products } from '../_data/products.js';
+import { getProducts } from '../_utils/db.js';
 
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,6 +12,7 @@ export default function handler(req, res) {
   if (!user) return res.status(401).json({ error: 'Authentication required' });
   if (user.role !== 'admin') return res.status(403).json({ error: 'Admin access required' });
 
+  const products = getProducts();
   const totalProducts = products.length;
   const totalDownloads = products.reduce((sum, p) => sum + p.downloads, 0);
   const totalRevenue = products.reduce((sum, p) => sum + (p.price * Math.floor(p.downloads * 0.3)), 0);

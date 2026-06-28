@@ -1,17 +1,5 @@
 import { getAuthUser } from '../_utils/auth.js';
-import { products } from '../_data/products.js';
-import fs from 'fs';
-import path from 'path';
-
-const saveProducts = () => {
-  try {
-    const filePath = path.join(process.cwd(), 'api', '_data', 'products.js');
-    const content = `export const products = ${JSON.stringify(products, null, 2)};\n`;
-    fs.writeFileSync(filePath, content, 'utf8');
-  } catch (err) {
-    console.warn('Persistence warning:', err.message);
-  }
-};
+import { getProducts, saveProducts } from '../_utils/db.js';
 
 const orders = [
   { id: 1, userId: 2, items: [{ productId: 1, name: 'ProSuite Design Studio', price: 299000, quantity: 1 }], total: 299000, status: 'completed', date: '2026-06-20T10:30:00Z' },
@@ -27,6 +15,8 @@ export default function handler(req, res) {
 
   const user = getAuthUser(req);
   if (!user) return res.status(401).json({ error: 'Authentication required' });
+
+  const products = getProducts();
 
   if (req.method === 'GET') {
     const userOrders = user.role === 'admin' ? orders : orders.filter(o => o.userId === user.id);
@@ -47,7 +37,7 @@ export default function handler(req, res) {
         dbProduct.downloads = (dbProduct.downloads || 0) + (item.quantity || 1);
       }
     }
-    saveProducts();
+    saveProducts(products);
 
     const order = { id: nextOrderId++, userId: user.id, items, total: total || 0, status: 'completed', date: new Date().toISOString() };
     orders.push(order);

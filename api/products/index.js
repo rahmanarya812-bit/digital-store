@@ -1,22 +1,12 @@
-import { products } from '../_data/products.js';
-import fs from 'fs';
-import path from 'path';
-
-const saveProducts = () => {
-  try {
-    const filePath = path.join(process.cwd(), 'api', '_data', 'products.js');
-    const content = `export const products = ${JSON.stringify(products, null, 2)};\n`;
-    fs.writeFileSync(filePath, content, 'utf8');
-  } catch (err) {
-    console.warn('Persistence warning:', err.message);
-  }
-};
+import { getProducts, saveProducts } from '../_utils/db.js';
 
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  const products = getProducts();
 
   // POST: Create a product
   if (req.method === 'POST') {
@@ -65,7 +55,7 @@ export default function handler(req, res) {
       isVisible: isVisible !== undefined ? Boolean(isVisible) : true
     };
     products.push(newProduct);
-    saveProducts();
+    saveProducts(products);
     return res.status(201).json({ product: newProduct });
   }
 
@@ -110,7 +100,7 @@ export default function handler(req, res) {
       wholesaleTiers: wholesaleTiers !== undefined ? wholesaleTiers : products[index].wholesaleTiers,
       isVisible: isVisible !== undefined ? Boolean(isVisible) : products[index].isVisible
     };
-    saveProducts();
+    saveProducts(products);
     return res.status(200).json({ product: products[index] });
   }
 
@@ -123,7 +113,7 @@ export default function handler(req, res) {
     if (index === -1) return res.status(404).json({ error: 'Product not found' });
     
     const deleted = products.splice(index, 1);
-    saveProducts();
+    saveProducts(products);
     return res.status(200).json({ success: true, product: deleted[0] });
   }
 
