@@ -41,7 +41,6 @@ export default function AdminDashboard() {
   const [prodOriginalPrice, setProdOriginalPrice] = useState('');
   const [prodFileSize, setProdFileSize] = useState('');
   const [prodFormat, setProdFormat] = useState('');
-  const [prodVersion, setProdVersion] = useState('');
   const [prodDescription, setProdDescription] = useState('');
   const [prodStock, setProdStock] = useState('');
 
@@ -179,7 +178,6 @@ export default function AdminDashboard() {
     setProdOriginalPrice('');
     setProdFileSize('');
     setProdFormat('');
-    setProdVersion('');
     setProdDescription('');
     setProdStock('99');
 
@@ -210,7 +208,6 @@ export default function AdminDashboard() {
     setProdOriginalPrice(prod.originalPrice || '');
     setProdFileSize(prod.fileSize || '');
     setProdFormat(prod.format || '');
-    setProdVersion(prod.version || '');
     setProdDescription(prod.description || '');
     setProdStock(prod.stock !== undefined ? String(prod.stock) : '99');
 
@@ -258,7 +255,6 @@ export default function AdminDashboard() {
       originalPrice: prodOriginalPrice ? Number(prodOriginalPrice) : null,
       fileSize: prodFileSize,
       format: prodFormat,
-      version: prodVersion,
       description: prodDescription,
       stock: calculatedStock,
 
@@ -490,7 +486,6 @@ export default function AdminDashboard() {
                 <tr>
                   <th>Product Details</th>
                   <th>Category</th>
-                  <th className="text-center">Version</th>
                   <th className="text-right">Price</th>
                   <th className="text-center">Stock</th>
                   <th className="text-center">Downloads</th>
@@ -500,7 +495,7 @@ export default function AdminDashboard() {
               <tbody>
                 {products.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="text-center py-4">No products available. Add some!</td>
+                    <td colSpan="6" className="text-center py-4">No products available. Add some!</td>
                   </tr>
                 ) : (
                   products.map(prod => (
@@ -512,7 +507,6 @@ export default function AdminDashboard() {
                         </div>
                       </td>
                       <td className="capitalize">{prod.category}</td>
-                      <td className="text-center">{prod.version || '1.0.0'}</td>
                       <td className="text-right">{formatPrice(prod.price)}</td>
                       <td className="text-center" style={{ color: prod.stock === 0 ? 'var(--danger)' : prod.stock < 5 ? 'var(--warning)' : 'var(--text-primary)', fontWeight: '600' }}>
                         {prod.stock !== undefined ? prod.stock : 'N/A'}

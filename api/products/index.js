@@ -11,7 +11,7 @@ export default function handler(req, res) {
   // POST: Create a product
   if (req.method === 'POST') {
     const { 
-      name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock,
+      name, category, price, originalPrice, description, shortDesc, format, fileSize, stock,
       code, useVariations, stockForm, editStockMode, accountsStock, termsAndConditions, requireNote,
       cashbackType, cashbackValue, profit, bulkingMode, wholesaleTiers, isVisible, image
     } = req.body || {};
@@ -29,7 +29,6 @@ export default function handler(req, res) {
       description: description || 'No description provided.',
       shortDesc: shortDesc || name,
       format: format || 'Digital Download',
-      version: version || '1.0.0',
       fileSize: fileSize || 'Unknown',
       image: image || (category === 'software' ? '/products/software.jpg' : category === 'ebook' ? '/products/ebook.jpg' : category === 'template' ? '/products/template.jpg' : category === 'course' ? '/products/course.jpg' : category === 'plugin' ? '/products/plugin.jpg' : '/products/assets.jpg'),
       rating: 5.0,
@@ -62,7 +61,7 @@ export default function handler(req, res) {
   // PUT: Edit a product
   if (req.method === 'PUT') {
     const { 
-      id, name, category, price, originalPrice, description, shortDesc, format, version, fileSize, stock,
+      id, name, category, price, originalPrice, description, shortDesc, format, fileSize, stock,
       code, useVariations, stockForm, editStockMode, accountsStock, termsAndConditions, requireNote,
       cashbackType, cashbackValue, profit, bulkingMode, wholesaleTiers, isVisible, image
     } = req.body || {};
@@ -80,7 +79,6 @@ export default function handler(req, res) {
       description: description || products[index].description,
       shortDesc: shortDesc || products[index].shortDesc,
       format: format || products[index].format,
-      version: version || products[index].version,
       fileSize: fileSize || products[index].fileSize,
       stock: stock !== undefined && stock !== '' ? Number(stock) : products[index].stock,
       image: image !== undefined ? image : products[index].image,

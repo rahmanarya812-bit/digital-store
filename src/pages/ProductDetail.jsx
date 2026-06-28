@@ -97,10 +97,6 @@ export default function ProductDetail() {
               <span className="spec-val">{product.format}</span>
             </div>
             <div className="spec-item">
-              <span className="spec-label">Version</span>
-              <span className="spec-val">{product.version}</span>
-            </div>
-            <div className="spec-item">
               <span className="spec-label">Stok Tersedia</span>
               <span 
                 className="spec-val" 
