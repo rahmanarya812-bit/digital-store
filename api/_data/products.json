@@ -1,4 +1,4 @@
-export const products = [
+[
   {
     "id": 2,
     "name": "Digital Marketing Mastery",
@@ -233,4 +233,4 @@ export const products = [
     "wholesaleTiers": [],
     "isVisible": true
   }
-];
+]
