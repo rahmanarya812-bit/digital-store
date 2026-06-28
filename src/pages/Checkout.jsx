@@ -222,12 +222,11 @@ export default function Checkout() {
             {paymentMethod === 'ewallet' && (
               <div className="ewallet-selector-container glass animate-fadeIn" style={{ marginTop: '0.5rem', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--text-primary)' }}>Pilih E-Wallet</h3>
-                <div className="ewallet-options" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
+                <div className="ewallet-options" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', marginBottom: '1rem' }}>
                   {[
                     { id: 'gopay', name: 'GoPay', color: '#00AED6' },
-                    { id: 'ovo', name: 'OVO', color: '#4C2A86' },
                     { id: 'dana', name: 'DANA', color: '#118EEA' },
-                    { id: 'linkaja', name: 'LinkAja', color: '#E52A2D' }
+                    { id: 'shopeepay', name: 'ShopeePay', color: '#EE4D2D' }
                   ].map(wallet => (
                     <button
                       key={wallet.id}
@@ -251,8 +250,40 @@ export default function Checkout() {
                     </button>
                   ))}
                 </div>
+
+                {/* E-Wallet Account Info Card */}
+                <div style={{
+                  padding: '1rem',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  marginBottom: '1rem'
+                }}>
+                  {selectedEWallet === 'gopay' && (
+                    <div>
+                      <span style={{ color: '#00AED6', display: 'block', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>GOPAY AKUN TOKO:</span>
+                      <strong style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.03em' }}>085808703940</strong>
+                      <span style={{ display: 'block', fontSize: '0.85rem', color: '#a0aec0', marginTop: '0.25rem' }}>Penerima: <strong>dhafy haykal</strong></span>
+                    </div>
+                  )}
+                  {selectedEWallet === 'dana' && (
+                    <div>
+                      <span style={{ color: '#118EEA', display: 'block', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>DANA AKUN TOKO:</span>
+                      <strong style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.03em' }}>085808703940</strong>
+                      <span style={{ display: 'block', fontSize: '0.85rem', color: '#a0aec0', marginTop: '0.25rem' }}>Penerima: <strong>moch arya qadhafy rahman</strong></span>
+                    </div>
+                  )}
+                  {selectedEWallet === 'shopeepay' && (
+                    <div>
+                      <span style={{ color: '#EE4D2D', display: 'block', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>SHOPEEPAY AKUN TOKO:</span>
+                      <strong style={{ fontSize: '1.2rem', color: '#ffffff', letterSpacing: '0.03em' }}>085607492894</strong>
+                      <span style={{ display: 'block', fontSize: '0.85rem', color: '#a0aec0', marginTop: '0.25rem' }}>Penerima: <strong>Ary4_Store</strong></span>
+                    </div>
+                  )}
+                </div>
+
                 <div className="form-group">
-                  <label htmlFor="phoneNumber">Nomor HP E-Wallet</label>
+                  <label htmlFor="phoneNumber">Nomor HP Pengirim E-Wallet</label>
                   <input
                     type="tel"
                     id="phoneNumber"
@@ -263,6 +294,25 @@ export default function Checkout() {
                     pattern="[0-9]{9,15}"
                     title="Silakan masukkan nomor HP valid antara 9 hingga 15 digit"
                   />
+                </div>
+              </div>
+            )}
+
+            {paymentMethod === 'bank' && (
+              <div className="bank-transfer-info glass animate-fadeIn" style={{ marginTop: '0.5rem', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>Detail Rekening Bank Transfer:</h3>
+                <div style={{
+                  padding: '1rem',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                  <span style={{ color: '#00D9FF', display: 'block', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>BANK SEABANK</span>
+                  <strong style={{ fontSize: '1.25rem', color: '#ffffff', letterSpacing: '0.05em' }}>901552586694</strong>
+                  <span style={{ display: 'block', fontSize: '0.85rem', color: '#a0aec0', marginTop: '0.25rem' }}>Nama Rekening: <strong>moch arya qadhafy rahman</strong></span>
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#8f9bb3', lineHeight: '1.4' }}>
+                  💡 <em>Silakan lakukan transfer ke rekening SeaBank di atas. Pembelian Anda akan langsung aktif secara instan setelah transfer dikonfirmasi.</em>
                 </div>
               </div>
             )}
