@@ -14,7 +14,7 @@ const STOCK_FORM_OPTIONS = [
 ];
 
 const getStockFormFormat = (opt) => {
-  if (opt === 'Tidak Ada') return null;
+  if (opt === 'Tidak Ada') return 'bebas / bebas format';
   if (opt === 'default') return 'email | password';
   if (opt === 'default-with-addinfo') return 'email | password | info';
   if (opt === 'applecode') return 'code';
@@ -247,9 +247,9 @@ export default function AdminDashboard() {
   const handleSaveProduct = async (e) => {
     e.preventDefault();
     
-    // Auto-calculate stock if automatic stock form is selected
+    // Auto-calculate stock based on the lines of accounts
     const lines = prodAccountsStock.split('\n').filter(line => line.trim() !== '');
-    const calculatedStock = prodStockForm !== 'Tidak Ada' ? lines.length : (prodStock !== '' ? Number(prodStock) : 99);
+    const calculatedStock = lines.length;
 
     const data = {
       name: prodName,
@@ -668,8 +668,8 @@ export default function AdminDashboard() {
                 </div>
               )}
 
-              {/* Row 4: Mode Edit Stock Toggle (only shown when editing an existing product and using stock form) */}
-              {editingProduct && prodStockForm !== 'Tidak Ada' && (
+              {/* Row 4: Mode Edit Stock Toggle (only shown when editing an existing product) */}
+              {editingProduct && (
                 <div className="form-group-light toggle-row">
                   <label className="switch-container">
                     <span className="label-text">Mode Edit Stock (ganti semua)</span>
@@ -686,37 +686,21 @@ export default function AdminDashboard() {
               )}
 
               {/* Row 5: Tambah Stock Akun Textarea */}
-              {prodStockForm !== 'Tidak Ada' && (
-                <div className="form-group-light">
-                  <label>
-                    {editingProduct && !prodEditStockMode ? 'Preview Akun Tersimpan' : 'Tambah Stock Akun'}
-                  </label>
-                  <textarea 
-                    rows="5" 
-                    value={prodAccountsStock} 
-                    onChange={e => setProdAccountsStock(e.target.value)} 
-                    readOnly={editingProduct && !prodEditStockMode}
-                    placeholder={`Masukkan data akun lisensi per baris...\nFormat: ${getStockFormFormat(prodStockForm)}`}
-                  ></textarea>
-                  <div style={{ marginTop: '0.25rem', fontSize: '0.82rem', color: '#5f6368', fontWeight: '500' }}>
-                    Terdeteksi: <strong>{prodAccountsStock.split('\n').filter(l => l.trim() !== '').length} Akun</strong> (Stok otomatis dihitung dari jumlah baris akun).
-                  </div>
+              <div className="form-group-light">
+                <label>
+                  {editingProduct && !prodEditStockMode ? 'Preview Akun Tersimpan' : 'Tambah Stock Akun'}
+                </label>
+                <textarea 
+                  rows="5" 
+                  value={prodAccountsStock} 
+                  onChange={e => setProdAccountsStock(e.target.value)} 
+                  readOnly={editingProduct && !prodEditStockMode}
+                  placeholder={`Masukkan data akun lisensi per baris...\nFormat: ${getStockFormFormat(prodStockForm)}`}
+                ></textarea>
+                <div style={{ marginTop: '0.25rem', fontSize: '0.82rem', color: '#5f6368', fontWeight: '500' }}>
+                  Terdeteksi: <strong>{prodAccountsStock.split('\n').filter(l => l.trim() !== '').length} Akun</strong> (Stok otomatis dihitung dari jumlah baris akun).
                 </div>
-              )}
-
-              {/* Row 5b: Stok Manual Input (Only shown if stock form is 'Tidak Ada') */}
-              {prodStockForm === 'Tidak Ada' && (
-                <div className="form-group-light">
-                  <label>Stok Manual</label>
-                  <input 
-                    type="number" 
-                    required 
-                    value={prodStock} 
-                    onChange={e => setProdStock(e.target.value)} 
-                    placeholder="e.g. 10, 50, 0" 
-                  />
-                </div>
-              )}
+              </div>
 
               {/* Advanced Settings Expandable Toggle */}
               <div className="advanced-toggle-btn" onClick={() => setShowAdvanced(!showAdvanced)} style={{
