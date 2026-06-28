@@ -19,15 +19,15 @@ export default function Wishlist() {
 
   return (
     <div className="page wishlist-page container animate-fadeIn">
-      <h1 className="section-title">Your Wishlist</h1>
-      <p className="section-subtitle">Manage your saved products and move them to cart</p>
+      <h1 className="section-title">Produk Favorit</h1>
+      <p className="section-subtitle">Kelola produk yang Anda simpan dan pindahkan ke keranjang</p>
 
       {items.length === 0 ? (
         <div className="empty-state glass">
           <span className="empty-state-icon">❤️</span>
-          <h3>Your wishlist is empty</h3>
-          <p>Find premium software or courses and click the heart icon to save them here.</p>
-          <Link to="/products" className="btn btn-primary">Discover Products</Link>
+          <h3>Daftar favorit Anda kosong</h3>
+          <p>Temukan software atau kursus premium dan klik ikon hati untuk menyimpannya di sini.</p>
+          <Link to="/products" className="btn btn-primary">Cari Produk</Link>
         </div>
       ) : (
         <div className="wishlist-grid">
@@ -45,7 +45,7 @@ export default function Wishlist() {
               </div>
               <div className="wishlist-item-actions">
                 <button className="btn btn-primary btn-sm" onClick={() => handleMoveToCart(item)}>
-                  <FiShoppingCart size={14} /> Move to Cart
+                  <FiShoppingCart size={14} /> Masukkan ke Keranjang
                 </button>
                 <button className="btn btn-secondary btn-sm remove-wish-btn" onClick={() => removeItem(item.id)} aria-label="Remove">
                   <FiTrash2 size={14} />

@@ -71,7 +71,7 @@ export default function ProductCard({ product }) {
             onClick={() => !isOutOfStock && addItem(product)} 
             aria-label={isOutOfStock ? "Stok Habis" : "Add to Cart"}
           >
-            <FiShoppingCart size={16} /> {isOutOfStock ? 'Habis' : 'Add'}
+            <FiShoppingCart size={16} /> {isOutOfStock ? 'Habis' : 'Beli'}
           </button>
         </div>
       </div>

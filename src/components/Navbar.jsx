@@ -42,10 +42,10 @@ export default function Navbar() {
         </Link>
 
         <div className={`navbar-links ${menuOpen ? 'active' : ''}`}>
-          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/products" className={`nav-link ${isActive('/products') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Products</Link>
-          <Link to="/contact" className={`nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Contact</Link>
-          {isLoggedIn && <Link to="/orders" className={`nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Orders</Link>}
+          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Beranda</Link>
+          <Link to="/products" className={`nav-link ${isActive('/products') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Produk</Link>
+          <Link to="/contact" className={`nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Kontak</Link>
+          {isLoggedIn && <Link to="/orders" className={`nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>Pesanan</Link>}
           {isLoggedIn && user?.role === 'admin' && (
             <Link to="/admin" className={`nav-link nav-link-admin ${isActive('/admin') ? 'active' : ''}`} onClick={() => setMenuOpen(false)}>
               <FiShield size={14} /> Admin
@@ -57,7 +57,7 @@ export default function Navbar() {
           <form className={`search-form ${searchOpen ? 'active' : ''}`} onSubmit={handleSearch}>
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Cari produk..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
@@ -88,16 +88,16 @@ export default function Navbar() {
                   <span className="user-role">{user?.role}</span>
                 </div>
                 <hr />
-                <Link to="/orders" className="dropdown-item">My Orders</Link>
-                <Link to="/wishlist" className="dropdown-item">Wishlist</Link>
+                <Link to="/orders" className="dropdown-item">Pesanan Saya</Link>
+                <Link to="/wishlist" className="dropdown-item">Favorit</Link>
                 {user?.role === 'admin' && <Link to="/admin" className="dropdown-item">Dashboard</Link>}
                 <button className="dropdown-item logout-btn" onClick={handleLogout}>
-                  <FiLogOut size={16} /> Logout
+                  <FiLogOut size={16} /> Keluar
                 </button>
               </div>
             </div>
           ) : (
-            <Link to="/login" className="btn btn-primary btn-sm nav-login-btn">Login</Link>
+            <Link to="/login" className="btn btn-primary btn-sm nav-login-btn">Masuk</Link>
           )}
 
           <button className="nav-icon-btn mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>

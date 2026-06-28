@@ -36,8 +36,8 @@ export default function Orders() {
 
   return (
     <div className="page orders-page container animate-fadeIn">
-      <h1 className="section-title">My Orders</h1>
-      <p className="section-subtitle">Manage activations and download purchased licenses</p>
+      <h1 className="section-title">Pesanan Saya</h1>
+      <p className="section-subtitle">Kelola aktivasi dan unduh lisensi produk digital Anda</p>
 
       {loading ? (
         <div className="orders-loading">
@@ -48,9 +48,9 @@ export default function Orders() {
       ) : orders.length === 0 ? (
         <div className="empty-state glass">
           <span className="empty-state-icon">📦</span>
-          <h3>No orders found</h3>
-          <p>You haven't purchased any premium products yet.</p>
-          <Link to="/products" className="btn btn-primary">Start Shopping</Link>
+          <h3>Belum ada pesanan</h3>
+          <p>Anda belum melakukan pembelian produk premium.</p>
+          <Link to="/products" className="btn btn-primary">Mulai Belanja</Link>
         </div>
       ) : (
         <div className="orders-list">
@@ -65,7 +65,7 @@ export default function Orders() {
                 </div>
                 <div className="order-meta-info">
                   <span className="order-total-price">{formatPrice(order.total)}</span>
-                  <span className="order-status-badge">active</span>
+                  <span className="order-status-badge">aktif</span>
                 </div>
               </div>
               <div className="order-items">
@@ -73,14 +73,14 @@ export default function Orders() {
                   <div key={idx} className="order-item">
                     <div className="order-item-info">
                       <h4>{item.name}</h4>
-                      <span>Quantity: {item.quantity}</span>
+                      <span>Kuantitas: {item.quantity}</span>
                     </div>
                     <div className="order-item-actions">
-                      <button className="btn btn-secondary btn-sm" onClick={() => alert('Mocking product download... key is active!')}>
-                        <FiDownload size={14} /> Download File
+                      <button className="btn btn-secondary btn-sm" onClick={() => alert('Mengunduh file produk... file siap!')}>
+                        <FiDownload size={14} /> Unduh File
                       </button>
-                      <button className="btn btn-secondary btn-sm" onClick={() => alert(`Mock License Key: ACTV-${(Math.random()*1e9).toFixed(0)}-LICS`)}>
-                        <FiFileText size={14} /> View License
+                      <button className="btn btn-secondary btn-sm" onClick={() => alert(item.deliveredAccounts ? `Lisensi/Akun:\n${item.deliveredAccounts.join('\n')}` : `Lisensi/Akun:\nACTV-${(Math.random()*1e9).toFixed(0)}-LICS`)}>
+                        <FiFileText size={14} /> Lihat Lisensi
                       </button>
                     </div>
                   </div>

@@ -2,21 +2,21 @@ import { FiGrid, FiCpu, FiBookOpen, FiLayout, FiVideo, FiCodesandbox, FiActivity
 import './FilterSidebar.css';
 
 const CATEGORIES = [
-  { value: 'all', label: 'All Categories', icon: <FiGrid size={16} /> },
+  { value: 'all', label: 'Semua Kategori', icon: <FiGrid size={16} /> },
   { value: 'software', label: 'Software', icon: <FiCpu size={16} /> },
-  { value: 'ebook', label: 'Ebooks', icon: <FiBookOpen size={16} /> },
-  { value: 'template', label: 'Templates', icon: <FiLayout size={16} /> },
-  { value: 'course', label: 'Courses', icon: <FiVideo size={16} /> },
-  { value: 'plugin', label: 'Plugins', icon: <FiCodesandbox size={16} /> },
-  { value: 'asset', label: 'Digital Assets', icon: <FiActivity size={16} /> }
+  { value: 'ebook', label: 'Ebook', icon: <FiBookOpen size={16} /> },
+  { value: 'template', label: 'Template', icon: <FiLayout size={16} /> },
+  { value: 'course', label: 'Kursus', icon: <FiVideo size={16} /> },
+  { value: 'plugin', label: 'Plugin', icon: <FiCodesandbox size={16} /> },
+  { value: 'asset', label: 'Asset Digital', icon: <FiActivity size={16} /> }
 ];
 
 const SORTS = [
-  { value: 'downloads', label: 'Most Popular' },
-  { value: 'newest', label: 'Newest Releases' },
-  { value: 'price_asc', label: 'Price: Low to High' },
-  { value: 'price_desc', label: 'Price: High to Low' },
-  { value: 'rating', label: 'Highest Rating' }
+  { value: 'downloads', label: 'Terpopuler' },
+  { value: 'newest', label: 'Terbaru' },
+  { value: 'price_asc', label: 'Harga: Terendah ke Tertinggi' },
+  { value: 'price_desc', label: 'Harga: Tertinggi ke Terendah' },
+  { value: 'rating', label: 'Rating Tertinggi' }
 ];
 
 export default function FilterSidebar({
@@ -33,7 +33,7 @@ export default function FilterSidebar({
   return (
     <aside className="filter-sidebar glass">
       <div className="filter-section">
-        <h3>Categories</h3>
+        <h3>Kategori</h3>
         <div className="category-list">
           {CATEGORIES.map((cat) => (
             <button
@@ -49,7 +49,7 @@ export default function FilterSidebar({
       </div>
 
       <div className="filter-section">
-        <h3>Sort By</h3>
+        <h3>Urutkan</h3>
         <select value={selectedSort} onChange={(e) => onSortChange(e.target.value)} className="filter-select">
           {SORTS.map((sort) => (
             <option key={sort.value} value={sort.value}>
@@ -60,7 +60,7 @@ export default function FilterSidebar({
       </div>
 
       <div className="filter-section">
-        <h3>Price Range</h3>
+        <h3>Rentang Harga</h3>
         <div className="price-inputs">
           <input
             type="number"
@@ -81,7 +81,7 @@ export default function FilterSidebar({
       </div>
 
       <button className="btn btn-secondary w-full clear-filters-btn" onClick={onClearFilters}>
-        Clear Filters
+        Bersihkan Filter
       </button>
     </aside>
   );

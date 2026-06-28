@@ -152,8 +152,8 @@ export default function Checkout() {
             ))}
           </div>
           <div className="success-actions">
-            <Link to="/orders" className="btn btn-primary">View My Orders</Link>
-            <Link to="/products" className="btn btn-secondary">Browse More</Link>
+            <Link to="/orders" className="btn btn-primary">Lihat Pesanan Saya</Link>
+            <Link to="/products" className="btn btn-secondary">Jelajahi Produk Lain</Link>
           </div>
         </div>
       </div>
@@ -165,9 +165,9 @@ export default function Checkout() {
       <div className="page checkout-page container">
         <div className="empty-state glass">
           <span className="empty-state-icon">🛒</span>
-          <h3>Checkout is empty</h3>
-          <p>You cannot checkout with an empty cart.</p>
-          <Link to="/products" className="btn btn-primary">Browse Catalogue</Link>
+          <h3>Keranjang Belanja Kosong</h3>
+          <p>Anda tidak bisa melakukan checkout dengan keranjang kosong.</p>
+          <Link to="/products" className="btn btn-primary">Jelajahi Katalog</Link>
         </div>
       </div>
     );
@@ -175,39 +175,39 @@ export default function Checkout() {
 
   return (
     <div className="page checkout-page container animate-fadeIn">
-      <h1 className="section-title">License Checkout</h1>
-      <p className="section-subtitle">Complete your payment and activate your digital licenses instantly</p>
+      <h1 className="section-title">Checkout Lisensi</h1>
+      <p className="section-subtitle">Selesaikan pembayaran Anda untuk mengaktifkan lisensi digital secara instan</p>
 
       <div className="checkout-layout">
         <form className="checkout-form glass" onSubmit={handlePlaceOrder}>
-          <h2>Customer Details</h2>
+          <h2>Detail Pelanggan</h2>
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="name">Nama Lengkap</label>
             <input
               type="text"
               id="name"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. John Doe"
+              placeholder="Contoh: Arya Pratama"
             />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Activation Email</label>
+            <label htmlFor="email">Email Aktivasi</label>
             <input
               type="email"
               id="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. john@example.com"
+              placeholder="Contoh: arya@example.com"
             />
           </div>
 
           <hr />
 
           <div className="payment-method-sec">
-            <h2>Payment Method</h2>
+            <h2>Metode Pembayaran</h2>
             
             <div className="payment-methods-grid">
               <div 
@@ -216,7 +216,7 @@ export default function Checkout() {
               >
                 <FiCreditCard size={20} style={{ color: paymentMethod === 'ewallet' ? 'var(--accent-secondary)' : 'inherit' }} />
                 <div className="payment-option-info">
-                  <span>E-Wallet (GoPay, OVO, DANA, LinkAja)</span>
+                  <span>E-Wallet (GoPay, DANA, ShopeePay)</span>
                   <p>Bayar langsung menggunakan e-wallet favorit Anda secara instan.</p>
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default function Checkout() {
                     required={paymentMethod === 'ewallet'}
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="e.g. 08123456789"
+                    placeholder="Contoh: 08123456789"
                     pattern="[0-9]{9,15}"
                     title="Silakan masukkan nomor HP valid antara 9 hingga 15 digit"
                   />
@@ -334,16 +334,16 @@ export default function Checkout() {
 
           <div className="checkout-buttons-container">
             <button type="submit" className="btn btn-primary btn-lg w-full" disabled={loading}>
-              {loading ? 'Processing Activation...' : `Pay & Activate — ${formatPrice(getTotal())}`}
+              {loading ? 'Memproses Aktivasi...' : `Bayar & Aktifkan — ${formatPrice(getTotal())}`}
             </button>
             <button type="button" className="btn btn-secondary btn-lg w-full auto-order-btn" onClick={handleAutoOrder} disabled={loading}>
-              ⚡ One-Click Auto Order (Demo)
+              ⚡ Pembelian Auto Satu-Klik (Demo)
             </button>
           </div>
         </form>
 
         <div className="checkout-summary glass">
-          <h2>Summary</h2>
+          <h2>Ringkasan Belanja</h2>
           <div className="summary-items">
             {items.map(item => (
               <div key={item.id} className="summary-item">
@@ -354,7 +354,7 @@ export default function Checkout() {
           </div>
           <hr />
           <div className="summary-row total-row">
-            <span>Total to Pay</span>
+            <span>Total Pembayaran</span>
             <span>{formatPrice(getTotal())}</span>
           </div>
         </div>

@@ -67,8 +67,8 @@ export default function Products() {
   return (
     <div className="page products-page container">
       <div className="products-header animate-fadeIn">
-        <h1 className="section-title">Digital Catalogue</h1>
-        <p className="section-subtitle">Premium utilities, software, templates and study kits</p>
+        <h1 className="section-title">Katalog Digital</h1>
+        <p className="section-subtitle">Aplikasi premium, software, template, dan materi belajar terbaik</p>
         <div className="products-search-wrapper">
           <SearchBar onSearch={(val) => updateParam('search', val)} initialValue={search} />
         </div>
@@ -89,7 +89,7 @@ export default function Products() {
 
         <main className="products-content">
           <div className="products-results-bar">
-            <span>Showing {products.length} of {total} products</span>
+            <span>Menampilkan {products.length} dari {total} produk</span>
           </div>
 
           {loading ? (
@@ -101,9 +101,9 @@ export default function Products() {
           ) : products.length === 0 ? (
             <div className="empty-state glass">
               <span className="empty-state-icon">🔍</span>
-              <h3>No products found</h3>
-              <p>Try adjusting your search terms or filter constraints.</p>
-              <button className="btn btn-primary" onClick={handleClearFilters}>Reset All Filters</button>
+              <h3>Produk tidak ditemukan</h3>
+              <p>Coba sesuaikan kata kunci pencarian atau filter harga Anda.</p>
+              <button className="btn btn-primary" onClick={handleClearFilters}>Reset Semua Filter</button>
             </div>
           ) : (
             <>
@@ -121,15 +121,15 @@ export default function Products() {
                     disabled={page <= 1}
                     onClick={() => updateParam('page', page - 1)}
                   >
-                    Previous
+                    Sebelumnya
                   </button>
-                  <span className="pagination-info">Page {page} of {totalPages}</span>
+                  <span className="pagination-info">Halaman {page} dari {totalPages}</span>
                   <button
                     className="btn btn-secondary btn-sm"
                     disabled={page >= totalPages}
                     onClick={() => updateParam('page', page + 1)}
                   >
-                    Next
+                    Selanjutnya
                   </button>
                 </div>
               )}

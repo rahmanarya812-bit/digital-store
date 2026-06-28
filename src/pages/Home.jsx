@@ -6,12 +6,12 @@ import ProductCard from '../components/ProductCard';
 import './Home.css';
 
 const CATEGORY_ITEMS = [
-  { slug: 'software', label: 'Software', icon: <FiCpu size={24} />, desc: 'AI engines and suites' },
-  { slug: 'ebook', label: 'Ebooks', icon: <FiBookOpen size={24} />, desc: 'Tech & startup playbooks' },
-  { slug: 'template', label: 'Templates', icon: <FiLayout size={24} />, desc: 'React, Vue & Figma kits' },
-  { slug: 'course', label: 'Courses', icon: <FiVideo size={24} />, desc: 'Full-stack & AI learning' },
-  { slug: 'plugin', label: 'Plugins', icon: <FiCodesandbox size={24} />, desc: 'WordPress optimization' },
-  { slug: 'asset', label: 'Assets', icon: <FiActivity size={24} />, desc: 'Premium motion kits' },
+  { slug: 'software', label: 'Software', icon: <FiCpu size={24} />, desc: 'Aplikasi AI & Tools Premium' },
+  { slug: 'ebook', label: 'Ebook', icon: <FiBookOpen size={24} />, desc: 'Ebook & Panduan Digital' },
+  { slug: 'template', label: 'Template', icon: <FiLayout size={24} />, desc: 'Template React, Vue & Figma' },
+  { slug: 'course', label: 'Kursus', icon: <FiVideo size={24} />, desc: 'Kursus Full-Stack & AI' },
+  { slug: 'plugin', label: 'Plugin', icon: <FiCodesandbox size={24} />, desc: 'Optimasi & Plugin WordPress' },
+  { slug: 'asset', label: 'Asset', icon: <FiActivity size={24} />, desc: 'Asset Gerak & Desain Premium' },
 ];
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero container">
         <div className="hero-content animate-fadeIn">
-          <span className="hero-tagline">⚡ Next-Gen Digital Marketplace</span>
+          <span className="hero-tagline">⚡ Marketplace Digital Generasi Baru</span>
           <h1 className="hero-title">
             Selamat Datang Di Marketplase <span className="text-glow">ARYA STORE</span> Menyediakan Kebutuhan Premium
           </h1>
@@ -45,9 +45,9 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Link to="/products" className="btn btn-primary btn-lg">
-              Explore Products <FiArrowRight size={18} />
+              Jelajahi Produk <FiArrowRight size={18} />
             </Link>
-            <a href="#categories" className="btn btn-secondary btn-lg">Browse Categories</a>
+            <a href="#categories" className="btn btn-secondary btn-lg">Cari Kategori</a>
           </div>
         </div>
         <div className="hero-visual">
@@ -58,8 +58,8 @@ export default function Home() {
 
       {/* Categories Section */}
       <section id="categories" className="categories-sec container">
-        <h2 className="section-title text-center">Browse by Category</h2>
-        <p className="section-subtitle text-center">Explore curated premium resources across high-end niches</p>
+        <h2 className="section-title text-center">Cari Berdasarkan Kategori</h2>
+        <p className="section-subtitle text-center">Jelajahi resource premium terbaik untuk kebutuhan digital Anda</p>
         <div className="categories-grid">
           {CATEGORY_ITEMS.map((cat) => (
             <div
@@ -79,11 +79,11 @@ export default function Home() {
       <section className="featured-sec container">
         <div className="section-header">
           <div>
-            <h2 className="section-title">Best Sellers</h2>
-            <p className="section-subtitle">Our most popular premium digital products</p>
+            <h2 className="section-title">Terlaris</h2>
+            <p className="section-subtitle">Produk digital premium paling populer pilihan pelanggan</p>
           </div>
           <Link to="/products" className="btn btn-secondary">
-            View All <FiArrowRight size={16} />
+            Lihat Semua <FiArrowRight size={16} />
           </Link>
         </div>
 
@@ -106,9 +106,9 @@ export default function Home() {
       <section className="promo-banner container">
         <div className="promo-banner-inner glass">
           <div className="promo-content">
-            <h2>Ready to transform your code & design?</h2>
-            <p>Sign up now to access special launching discounts and exclusive free digital assets weekly.</p>
-            <Link to="/register" className="btn btn-primary">Create Free Account</Link>
+            <h2>Siap meningkatkan performa & desain Anda?</h2>
+            <p>Daftar akun sekarang untuk mendapatkan diskon peluncuran spesial dan aset digital premium gratis mingguan.</p>
+            <Link to="/register" className="btn btn-primary">Buat Akun Gratis</Link>
           </div>
         </div>
       </section>

@@ -30,23 +30,23 @@ export default function Cart() {
 
   return (
     <div className="page cart-page container animate-fadeIn">
-      <h1 className="section-title">Your Cart</h1>
-      <p className="section-subtitle">Review items and proceed to license activation</p>
+      <h1 className="section-title">Keranjang Belanja</h1>
+      <p className="section-subtitle">Periksa produk belanjaan Anda dan lanjutkan ke aktivasi lisensi</p>
 
       {items.length === 0 ? (
         <div className="empty-state glass">
           <span className="empty-state-icon">🛒</span>
-          <h3>Your cart is empty</h3>
-          <p>Browse our catalog to add software, themes, or courses to your cart.</p>
-          <Link to="/products" className="btn btn-primary">Browse Catalogue</Link>
+          <h3>Keranjang belanja Anda kosong</h3>
+          <p>Jelajahi katalog kami untuk menambahkan software, template, atau kursus ke keranjang.</p>
+          <Link to="/products" className="btn btn-primary">Jelajahi Katalog</Link>
         </div>
       ) : (
         <div className="cart-layout">
           <div className="cart-main">
             <div className="cart-table-header glass">
-              <span>Product</span>
-              <span className="text-center">Price</span>
-              <span className="text-center">Quantity</span>
+              <span>Produk</span>
+              <span className="text-center">Harga</span>
+              <span className="text-center">Jumlah</span>
               <span className="text-right">Subtotal</span>
             </div>
             <div className="cart-items">
@@ -61,7 +61,7 @@ export default function Cart() {
                       <div>
                         <h3>{item.name}</h3>
                         <button className="remove-btn" onClick={() => removeItem(item.id)}>
-                          <FiTrash2 size={14} /> Remove
+                          <FiTrash2 size={14} /> Hapus
                         </button>
                       </div>
                     </div>
@@ -98,19 +98,19 @@ export default function Cart() {
               })}
             </div>
             <div className="cart-actions">
-              <button className="btn btn-secondary" onClick={clearCart}>Clear Cart</button>
-              <Link to="/products" className="btn btn-secondary">Continue Shopping</Link>
+              <button className="btn btn-secondary" onClick={clearCart}>Kosongkan Keranjang</button>
+              <Link to="/products" className="btn btn-secondary">Lanjutkan Belanja</Link>
             </div>
           </div>
 
           <div className="cart-sidebar glass">
-            <h2>Order Summary</h2>
+            <h2>Ringkasan Pesanan</h2>
             <div className="summary-row">
               <span>Subtotal</span>
               <span>{formatPrice(getTotal())}</span>
             </div>
             <div className="summary-row">
-              <span>Discount (Launch)</span>
+              <span>Diskon</span>
               <span className="text-success">- Rp 0</span>
             </div>
             <hr />
@@ -119,7 +119,7 @@ export default function Cart() {
               <span>{formatPrice(getTotal())}</span>
             </div>
             <button className="btn btn-primary w-full checkout-btn" onClick={handleCheckout}>
-              Proceed to Activation <FiArrowRight size={16} />
+              Lanjut ke Aktivasi <FiArrowRight size={16} />
             </button>
           </div>
         </div>

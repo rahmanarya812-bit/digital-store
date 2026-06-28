@@ -48,9 +48,9 @@ export default function ProductDetail() {
       <div className="page product-detail-page container">
         <div className="empty-state glass">
           <span className="empty-state-icon">⚠️</span>
-          <h3>Product Error</h3>
-          <p>{error || 'The product you are looking for does not exist.'}</p>
-          <Link to="/products" className="btn btn-primary">Back to Catalog</Link>
+          <h3>Error Produk</h3>
+          <p>{error || 'Produk yang Anda cari tidak tersedia.'}</p>
+          <Link to="/products" className="btn btn-primary">Kembali ke Katalog</Link>
         </div>
       </div>
     );
@@ -81,10 +81,10 @@ export default function ProductDetail() {
             <div className="detail-rating">
               <FiStar size={16} fill="var(--warning)" color="var(--warning)" />
               <span className="rating-val">{product.rating}</span>
-              <span className="reviews-count">({product.reviews} reviews)</span>
+              <span className="reviews-count">({product.reviews} ulasan)</span>
             </div>
             <div className="detail-stats">
-              <span><FiDownload size={14} /> {product.downloads.toLocaleString()} downloads</span>
+              <span><FiDownload size={14} /> {product.downloads.toLocaleString()} unduhan</span>
               <span><FiFileText size={14} /> {product.fileSize}</span>
             </div>
           </div>
@@ -101,8 +101,8 @@ export default function ProductDetail() {
               <span 
                 className="spec-val" 
                 style={{ 
-                  color: product.stock === 0 ? 'var(--danger)' : product.stock < 5 ? 'var(--warning)' : 'var(--success)', 
-                  fontWeight: '600' 
+                   color: product.stock === 0 ? 'var(--danger)' : product.stock < 5 ? 'var(--warning)' : 'var(--success)', 
+                   fontWeight: '600' 
                 }}
               >
                 {product.stock === 0 ? 'Habis' : `${product.stock} Lisensi`}
@@ -151,7 +151,7 @@ export default function ProductDetail() {
                 disabled={product.stock === 0} 
                 onClick={() => product.stock > 0 && addItem(product)}
               >
-                <FiShoppingCart size={20} /> {product.stock === 0 ? 'Stok Habis' : 'Add to Cart'}
+                <FiShoppingCart size={20} /> {product.stock === 0 ? 'Stok Habis' : 'Tambah ke Keranjang'}
               </button>
               <button
                 className={`btn btn-secondary btn-lg wishlist-detail-btn ${isWish ? 'active' : ''}`}
@@ -168,7 +168,7 @@ export default function ProductDetail() {
       {/* Features Checklist */}
       {product.features && product.features.length > 0 && (
         <section className="detail-features-sec">
-          <h2 className="section-title">What's Included</h2>
+          <h2 className="section-title">Fitur & Keunggulan</h2>
           <div className="features-checklist-grid">
             {product.features.map((feat, i) => (
               <div key={i} className="checklist-item glass">
@@ -183,8 +183,8 @@ export default function ProductDetail() {
       {/* Related Products */}
       {related.length > 0 && (
         <section className="related-products-sec">
-          <h2 className="section-title">Related Products</h2>
-          <p className="section-subtitle">Customers who viewed this also bought</p>
+          <h2 className="section-title">Produk Terkait</h2>
+          <p className="section-subtitle">Pelanggan lain juga membeli produk ini</p>
           <div className="products-grid">
             {related.map((prod) => (
               <ProductCard key={prod.id} product={prod} />
