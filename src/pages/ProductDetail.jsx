@@ -68,7 +68,14 @@ export default function ProductDetail() {
         </div>
 
         <div className="detail-info">
-          <span className="detail-category">{product.category}</span>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+            <span className="detail-category" style={{ margin: 0 }}>{product.category}</span>
+            {product.cashbackValue > 0 && (
+              <span className="detail-cashback-badge">
+                💰 Cashback {product.cashbackType === 'Persentase' ? `${product.cashbackValue}%` : formatPrice(product.cashbackValue)}
+              </span>
+            )}
+          </div>
           <h1 className="detail-title">{product.name}</h1>
           <div className="detail-meta">
             <div className="detail-rating">
@@ -107,11 +114,34 @@ export default function ProductDetail() {
             </div>
           </div>
 
+          {product.termsAndConditions && (
+            <div className="detail-terms-box glass">
+              <h4>📋 Syarat & Ketentuan Lisensi:</h4>
+              <p>{product.termsAndConditions}</p>
+            </div>
+          )}
+
           <div className="detail-pricing-actions">
             <div className="detail-price-box">
               <span className="detail-price">{formatPrice(product.price)}</span>
               {product.originalPrice && <span className="detail-original-price">{formatPrice(product.originalPrice)}</span>}
             </div>
+
+            {/* Wholesale Price Tiers Callout */}
+            {product.wholesaleTiers && product.wholesaleTiers.length > 0 && (
+              <div className="detail-wholesale-tiers glass">
+                <h4>⭐ Harga Grosir (Beli Banyak Lebih Murah):</h4>
+                <div className="detail-tiers-grid">
+                  {product.wholesaleTiers.map((tier, idx) => (
+                    <div key={idx} className="detail-tier-pill">
+                      <span className="tier-qty">Beli {tier.minQty}+ pcs</span>
+                      <span className="tier-price">{formatPrice(tier.price)}/pcs</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="detail-buttons">
               <button 
                 className="btn btn-lg flex-1" 
