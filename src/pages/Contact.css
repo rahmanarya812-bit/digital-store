@@ -132,3 +132,59 @@
     width: 100%;
   }
 }
+
+.contact-whatsapp-card {
+  margin-top: 2.5rem;
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  background: rgba(78, 203, 113, 0.03); /* subtle green tint */
+  border-left: 4px solid var(--success);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contact-whatsapp-card h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contact-whatsapp-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 600px;
+}
+
+.whatsapp-direct-btn {
+  background: #25D366 !important; /* WhatsApp Green */
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all var(--transition-normal);
+  border: none;
+}
+
+.whatsapp-direct-btn:hover {
+  background: #20ba59 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+@media (max-width: 768px) {
+  .contact-whatsapp-card {
+    padding: 1.75rem;
+    margin-top: 2rem;
+  }
+  .whatsapp-direct-btn {
+    width: 100%;
+  }
+}

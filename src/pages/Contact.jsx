@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import './Contact.css';
 
 export default function Contact() {
@@ -104,6 +105,20 @@ export default function Contact() {
               {loading ? 'Mengirim...' : 'KIRIM PESAN'}
             </button>
           </form>
+        </div>
+
+        {/* WhatsApp Direct Contact Section */}
+        <div className="contact-whatsapp-card glass text-center">
+          <h3>Hubungi via WhatsApp</h3>
+          <p>Butuh bantuan cepat atau pertanyaan seputar produk? Hubungi kami langsung untuk respon instan.</p>
+          <a 
+            href="https://wa.me/6281234567890" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn whatsapp-direct-btn"
+          >
+            <FaWhatsapp size={20} /> Chat Sekarang
+          </a>
         </div>
       </div>
     </div>
