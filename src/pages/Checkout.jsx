@@ -52,7 +52,7 @@ export default function Checkout() {
       }));
       const data = await orderService.create(orderItems, getTotal());
       setOrderId(data.order.id);
-      setPurchasedItems([...items]);
+      setPurchasedItems(data.order.items);
       setSuccess(true);
       setShowToast(true);
       clearCart();
@@ -88,7 +88,7 @@ export default function Checkout() {
 
       const data = await orderService.create(orderItems, getTotal());
       setOrderId(data.order.id);
-      setPurchasedItems([...items]);
+      setPurchasedItems(data.order.items);
       setSuccess(true);
       setShowToast(true);
       clearCart();
@@ -128,12 +128,26 @@ export default function Checkout() {
           <p className="success-message">
             Terima kasih atas pembelian Anda. Pembayaran menggunakan e-wallet <strong>{paymentMethod === 'ewallet' ? selectedEWallet.toUpperCase() : 'QRIS'}</strong> berhasil diverifikasi. Kami telah mengirimkan detail aktivasi dan lisensi ke <strong>{email}</strong>.
           </p>
-          <div className="license-box glass">
-            <h3>🔑 Instant License Keys</h3>
+          <div className="license-box glass" style={{ textAlign: 'left' }}>
+            <h3 style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '0.5rem', marginBottom: '0.75rem' }}>🔑 Instant License Keys / Account Credentials</h3>
             {purchasedItems.map(item => (
-              <div key={item.id} className="license-item">
-                <span>{item.name}</span>
-                <code>ACTV-{(Math.random()*1e9).toFixed(0)}-LICS</code>
+              <div key={item.id || item.productId} className="license-item" style={{ marginBottom: '1rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.75rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                <span style={{ fontWeight: '700', color: '#00D9FF', display: 'block', marginBottom: '0.5rem' }}>{item.name} ({item.quantity}x):</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  {item.deliveredAccounts && item.deliveredAccounts.map((account, idx) => (
+                    <code key={idx} style={{
+                      background: 'rgba(0, 0, 0, 0.3)',
+                      color: '#4ecb71',
+                      padding: '0.4rem 0.75rem',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontFamily: 'monospace',
+                      display: 'block',
+                      wordBreak: 'break-all',
+                      borderLeft: '3px solid #4ecb71'
+                    }}>{account}</code>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

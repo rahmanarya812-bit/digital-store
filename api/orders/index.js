@@ -27,14 +27,37 @@ export default function handler(req, res) {
     const { items, total } = req.body || {};
     if (!items || !items.length) return res.status(400).json({ error: 'Order items required' });
 
-    // Decrement stock & increment downloads for each item
+    // Decrement stock & extract accounts for each item
     for (const item of items) {
       const dbProduct = products.find(p => p.id === Number(item.productId));
       if (dbProduct) {
-        if (dbProduct.stock !== undefined && dbProduct.stock !== null) {
-          dbProduct.stock = Math.max(0, dbProduct.stock - (item.quantity || 1));
-        }
         dbProduct.downloads = (dbProduct.downloads || 0) + (item.quantity || 1);
+        
+        // Extract real accounts if available
+        const accounts = dbProduct.accountsStock 
+          ? dbProduct.accountsStock.split('\n').map(a => a.trim()).filter(Boolean) 
+          : [];
+          
+        if (accounts.length > 0) {
+          const qty = item.quantity || 1;
+          const delivered = accounts.slice(0, qty);
+          const remaining = accounts.slice(qty);
+          
+          dbProduct.accountsStock = remaining.join('\n');
+          dbProduct.stock = remaining.length;
+          item.deliveredAccounts = delivered;
+        } else {
+          // Fallback if no accounts stock is available in database
+          if (dbProduct.stock !== undefined && dbProduct.stock !== null) {
+            dbProduct.stock = Math.max(0, dbProduct.stock - (item.quantity || 1));
+          }
+          item.deliveredAccounts = Array.from({ length: item.quantity || 1 }, () => 
+            `ACTV-${Math.floor(Math.random() * 1e9)}-LICS`
+          );
+        }
+      } else {
+        // Fallback for missing product
+        item.deliveredAccounts = [`ACTV-${Math.floor(Math.random() * 1e9)}-LICS`];
       }
     }
     saveProducts(products);
