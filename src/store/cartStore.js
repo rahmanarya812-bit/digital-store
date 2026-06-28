@@ -56,7 +56,15 @@ export const useCartStore = create((set, get) => ({
       if (existing) {
         items = state.items.map(i => i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i);
       } else {
-        items = [...state.items, { id: product.id, name: product.name, price: product.price, image: product.image, quantity, stock: product.stock }];
+        items = [...state.items, { 
+          id: product.id, 
+          name: product.name, 
+          price: product.price, 
+          image: product.image, 
+          quantity, 
+          stock: product.stock,
+          wholesaleTiers: product.wholesaleTiers || [] 
+        }];
       }
       localStorage.setItem('cart_items', JSON.stringify(items));
       return { items, isOpen: true };
@@ -98,6 +106,14 @@ export const useCartStore = create((set, get) => ({
   openCart: () => set({ isOpen: true }),
   closeCart: () => set({ isOpen: false }),
 
-  getTotal: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+  getTotal: () => get().items.reduce((sum, i) => {
+    let unitPrice = i.price;
+    if (i.wholesaleTiers && i.wholesaleTiers.length > 0) {
+      const sortedTiers = [...i.wholesaleTiers].sort((a, b) => b.minQty - a.minQty);
+      const matchingTier = sortedTiers.find(tier => i.quantity >= tier.minQty);
+      if (matchingTier) unitPrice = matchingTier.price;
+    }
+    return sum + unitPrice * i.quantity;
+  }, 0),
   getCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
 }));

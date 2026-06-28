@@ -28,6 +28,13 @@ export default function Checkout() {
     }
   }, [success, showToast]);
 
+  const getEffectivePrice = (item) => {
+    if (!item.wholesaleTiers || item.wholesaleTiers.length === 0) return item.price;
+    const sortedTiers = [...item.wholesaleTiers].sort((a, b) => b.minQty - a.minQty);
+    const matchingTier = sortedTiers.find(tier => item.quantity >= tier.minQty);
+    return matchingTier ? matchingTier.price : item.price;
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price);
   };
@@ -40,7 +47,7 @@ export default function Checkout() {
       const orderItems = items.map(item => ({
         productId: item.id,
         name: item.name,
-        price: item.price,
+        price: getEffectivePrice(item),
         quantity: item.quantity
       }));
       const data = await orderService.create(orderItems, getTotal());
@@ -75,7 +82,7 @@ export default function Checkout() {
       const orderItems = items.map(item => ({
         productId: item.id,
         name: item.name,
-        price: item.price,
+        price: getEffectivePrice(item),
         quantity: item.quantity
       }));
 
