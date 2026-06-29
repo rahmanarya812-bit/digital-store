@@ -36,12 +36,14 @@ export default function Orders() {
   };
 
   const downloadReceiptTxt = (order) => {
+    const storeName = localStorage.getItem('receipt_store_name') || 'ARYA STORE';
+    const storeTagline = localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium';
     const divider = "========================================\n";
     const line = "----------------------------------------\n";
     let txt = "";
     txt += divider;
-    txt += "               ARYA STORE               \n";
-    txt += "    Marketplace Produk Digital Premium   \n";
+    txt += `${storeName.substring(0, 40).padStart(Math.floor((40 + Math.min(40, storeName.length)) / 2)).padEnd(40)}\n`;
+    txt += `${storeTagline.substring(0, 40).padStart(Math.floor((40 + Math.min(40, storeTagline.length)) / 2)).padEnd(40)}\n`;
     txt += divider;
     txt += `ID Pesanan : #${order.id}\n`;
     txt += `Tanggal    : ${formatDate(order.date)}\n`;
@@ -141,9 +143,9 @@ export default function Orders() {
           <div className="receipt-paper-wrapper" onClick={(e) => e.stopPropagation()}>
             <div className="receipt-paper">
               <div className="receipt-header">
-                <h2>ARYA STORE</h2>
-                <p>Marketplace Produk Digital Premium</p>
-                <p>Telp: 085808703940</p>
+                <h2>{localStorage.getItem('receipt_store_name') || 'ARYA STORE'}</h2>
+                <p>{localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium'}</p>
+                <p>Telp: {localStorage.getItem('receipt_store_phone') || '085808703940'}</p>
               </div>
 
               <div className="receipt-info-row">

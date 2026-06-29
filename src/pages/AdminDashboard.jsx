@@ -61,6 +61,11 @@ export default function AdminDashboard() {
   const [prodImage, setProdImage] = useState('');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  // Settings states
+  const [receiptName, setReceiptName] = useState(localStorage.getItem('receipt_store_name') || 'ARYA STORE');
+  const [receiptTagline, setReceiptTagline] = useState(localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium');
+  const [receiptPhone, setReceiptPhone] = useState(localStorage.getItem('receipt_store_phone') || '085808703940');
+
   const fetchStats = () => {
     adminService.getStats()
       .then(data => {
@@ -316,9 +321,15 @@ export default function AdminDashboard() {
         >
           📦 Manage Products (CRUD)
         </button>
+        <button 
+          className={`tab-btn ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          ⚙️ Pengaturan Struk
+        </button>
       </div>
 
-       {activeTab === 'dashboard' ? (
+       {activeTab === 'dashboard' && (
         <>
           {/* Stock Alerts Section */}
           {products.some(p => p.stock <= 3) && (
@@ -471,7 +482,9 @@ export default function AdminDashboard() {
             </div>
           </div>
         </>
-      ) : (
+      )}
+
+      {activeTab === 'products' && (
         /* Products CRUD Panel */
         <div className="products-mgmt-panel glass animate-fadeIn">
           <div className="mgmt-header">
@@ -527,6 +540,180 @@ export default function AdminDashboard() {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'settings' && (
+        <div className="settings-panel glass animate-fadeIn" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '2rem', alignItems: 'start', padding: '2rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
+          <div className="settings-form-sec">
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>⚙️ Kustomisasi Struk Kasir</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>
+              Sesuaikan nama toko, deskripsi, dan nomor telepon yang akan dicetak di struk kasir kertas (thermal receipt) belanja pembeli.
+            </p>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="receiptName" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Nama Toko / Struk</label>
+              <input
+                type="text"
+                id="receiptName"
+                value={receiptName}
+                onChange={(e) => {
+                  setReceiptName(e.target.value);
+                  localStorage.setItem('receipt_store_name', e.target.value);
+                }}
+                placeholder="Contoh: ARYA STORE"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="receiptTagline" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Tagline / Deskripsi Toko</label>
+              <input
+                type="text"
+                id="receiptTagline"
+                value={receiptTagline}
+                onChange={(e) => {
+                  setReceiptTagline(e.target.value);
+                  localStorage.setItem('receipt_store_tagline', e.target.value);
+                }}
+                placeholder="Contoh: Marketplace Produk Digital Premium"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+              <label htmlFor="receiptPhone" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Nomor Telepon / Kontak Toko</label>
+              <input
+                type="text"
+                id="receiptPhone"
+                value={receiptPhone}
+                onChange={(e) => {
+                  setReceiptPhone(e.target.value);
+                  localStorage.setItem('receipt_store_phone', e.target.value);
+                }}
+                placeholder="Contoh: 085808703940"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+            
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button 
+                type="button" 
+                className="btn btn-primary"
+                onClick={() => {
+                  alert('Pengaturan struk berhasil disimpan!');
+                }}
+              >
+                Simpan
+              </button>
+              <button 
+                type="button" 
+                className="btn btn-secondary"
+                onClick={() => {
+                  setReceiptName('ARYA STORE');
+                  setReceiptTagline('Marketplace Produk Digital Premium');
+                  setReceiptPhone('085808703940');
+                  localStorage.setItem('receipt_store_name', 'ARYA STORE');
+                  localStorage.setItem('receipt_store_tagline', 'Marketplace Produk Digital Premium');
+                  localStorage.setItem('receipt_store_phone', '085808703940');
+                  alert('Konfigurasi struk direset ke default!');
+                }}
+              >
+                Reset Default
+              </button>
+            </div>
+          </div>
+
+          {/* Struk Live Preview Card */}
+          <div className="settings-preview-sec" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1rem', fontWeight: '700' }}>👁️ Live Preview Struk</h3>
+            <div className="receipt-paper" style={{ transform: 'none', animation: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.3)', width: '100%', borderRadius: '4px' }}>
+              <div className="receipt-header" style={{ color: '#1a1a1a' }}>
+                <h2 style={{ color: '#1a1a1a', fontFamily: 'monospace' }}>{receiptName || 'ARYA STORE'}</h2>
+                <p style={{ color: '#1a1a1a', fontFamily: 'monospace' }}>{receiptTagline || 'Marketplace Produk Digital Premium'}</p>
+                <p style={{ color: '#1a1a1a', fontFamily: 'monospace' }}>Telp: {receiptPhone || '085808703940'}</p>
+              </div>
+
+              <div className="receipt-info-row" style={{ color: '#1a1a1a' }}>
+                <span>ID Pesanan:</span>
+                <span>#3</span>
+              </div>
+              <div className="receipt-info-row" style={{ color: '#1a1a1a' }}>
+                <span>Tanggal:</span>
+                <span>29 Jun 2026</span>
+              </div>
+              <div className="receipt-info-row" style={{ color: '#1a1a1a' }}>
+                <span>Status:</span>
+                <span style={{ fontWeight: 'bold', color: '#2e7d32' }}>LUNAS & AKTIF</span>
+              </div>
+
+              <div className="receipt-divider" style={{ borderColor: '#333' }}></div>
+
+              <div style={{ fontWeight: 'bold', marginBottom: '0.5rem', color: '#1a1a1a' }}>DAFTAR PRODUK:</div>
+              <div className="receipt-item-block" style={{ color: '#1a1a1a' }}>
+                <div className="receipt-item-title" style={{ fontFamily: 'monospace' }}>Digital Marketing Mastery</div>
+                <div className="receipt-item-price-row">
+                  <span>1x Rp 149.000</span>
+                  <span>Rp 149.000</span>
+                </div>
+                <div className="receipt-license-keys" style={{ color: '#1a1a1a', background: 'rgba(0,0,0,0.05)' }}>
+                  <div style={{ fontWeight: 'bold', fontSize: '0.7rem', marginBottom: '0.15rem' }}>LISENSI / AKUN:</div>
+                  <div style={{ fontFamily: 'monospace' }}>&gt; ACTV-68462211-LICS</div>
+                </div>
+              </div>
+
+              <div className="receipt-total-section" style={{ color: '#1a1a1a', borderColor: '#333' }}>
+                <div className="receipt-info-row">
+                  <span>TOTAL BAYAR:</span>
+                  <span>Rp 149.000</span>
+                </div>
+              </div>
+
+              <div className="receipt-divider" style={{ borderColor: '#333' }}></div>
+
+              <div className="receipt-footer" style={{ color: '#1a1a1a' }}>
+                <p>Terima kasih atas kepercayaan Anda!</p>
+                <p>Simpan struk ini sebagai bukti transaksi sah Anda secara instan.</p>
+              </div>
+
+              <div className="receipt-barcode" style={{ height: '30px' }}>
+                <span className="barcode-line" style={{ width: '2px' }}></span>
+                <span className="barcode-line" style={{ width: '4px' }}></span>
+                <span className="barcode-line" style={{ width: '1px' }}></span>
+                <span className="barcode-line" style={{ width: '3px' }}></span>
+                <span className="barcode-line" style={{ width: '1px' }}></span>
+                <span className="barcode-line" style={{ width: '4px' }}></span>
+                <span className="barcode-line" style={{ width: '2px' }}></span>
+              </div>
+            </div>
           </div>
         </div>
       )}
