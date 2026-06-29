@@ -1,3 +1,4 @@
+// Force redeploy to apply Vercel KV environment variables
 export async function kvCall(command, args = []) {
   const url = process.env.KV_REST_API_URL;
   const token = process.env.KV_REST_API_TOKEN;
