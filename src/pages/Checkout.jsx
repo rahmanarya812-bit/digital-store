@@ -209,29 +209,52 @@ export default function Checkout() {
           <div className="payment-method-sec">
             <h2>Metode Pembayaran</h2>
             
-            <div className="payment-methods-grid">
+            <div className="payment-methods-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem', marginBottom: '1.25rem' }}>
+              <div 
+                className={`payment-option glass ${paymentMethod === 'qris' ? 'active' : ''}`}
+                onClick={() => setPaymentMethod('qris')}
+                style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', cursor: 'pointer', borderRadius: '8px' }}
+              >
+                <FiCreditCard size={20} style={{ color: paymentMethod === 'qris' ? '#4ecb71' : 'inherit' }} />
+                <div className="payment-option-info">
+                  <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff' }}>QRIS (Otomatis)</span>
+                  <p style={{ fontSize: '0.7rem', color: '#a0aec0', marginTop: '0.25rem', lineHeight: '1.3' }}>Scan langsung, aktif otomatis.</p>
+                </div>
+              </div>
+
               <div 
                 className={`payment-option glass ${paymentMethod === 'ewallet' ? 'active' : ''}`}
                 onClick={() => setPaymentMethod('ewallet')}
+                style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', cursor: 'pointer', borderRadius: '8px' }}
               >
                 <FiCreditCard size={20} style={{ color: paymentMethod === 'ewallet' ? 'var(--accent-secondary)' : 'inherit' }} />
                 <div className="payment-option-info">
-                  <span>E-Wallet (GoPay, DANA, ShopeePay)</span>
-                  <p>Bayar langsung menggunakan e-wallet favorit Anda secara instan.</p>
+                  <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff' }}>E-Wallet Manual</span>
+                  <p style={{ fontSize: '0.7rem', color: '#a0aec0', marginTop: '0.25rem', lineHeight: '1.3' }}>Kirim ke GoPay/DANA/ShopeePay.</p>
                 </div>
               </div>
               
               <div 
                 className={`payment-option glass ${paymentMethod === 'bank' ? 'active' : ''}`}
                 onClick={() => setPaymentMethod('bank')}
+                style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', cursor: 'pointer', borderRadius: '8px' }}
               >
                 <FiCreditCard size={20} style={{ color: paymentMethod === 'bank' ? 'var(--accent-primary)' : 'inherit' }} />
                 <div className="payment-option-info">
-                  <span>QRIS / Bank Transfer</span>
-                  <p>Transfer bank atau scan kode QRIS langsung untuk aktivasi lisensi.</p>
+                  <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#ffffff' }}>Transfer Bank</span>
+                  <p style={{ fontSize: '0.7rem', color: '#a0aec0', marginTop: '0.25rem', lineHeight: '1.3' }}>Transfer manual bank SeaBank.</p>
                 </div>
               </div>
             </div>
+
+            {paymentMethod === 'qris' && (
+              <div className="ewallet-selector-container glass animate-fadeIn" style={{ marginTop: '0.5rem', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', marginBottom: '1.25rem' }}>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.5rem', color: '#4ecb71' }}>Pembayaran QRIS Otomatis</h3>
+                <p style={{ fontSize: '0.8rem', color: '#a0aec0', lineHeight: '1.5', margin: 0 }}>
+                  Setelah mengklik "Buat Pesanan", kode QRIS pembayaran dinamis akan ditampilkan langsung di layar ini. Cukup scan menggunakan aplikasi Gopay, DANA, OVO, ShopeePay, atau Mobile Banking Anda. Lisensi Anda akan langsung terkirim dan aktif otomatis setelah bayar!
+                </p>
+              </div>
+            )}
 
             {paymentMethod === 'ewallet' && (
               <div className="ewallet-selector-container glass animate-fadeIn" style={{ marginTop: '0.5rem', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>

@@ -7,6 +7,7 @@ import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import CheckoutSimulation from './pages/CheckoutSimulation';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Wishlist from './pages/Wishlist';
@@ -57,6 +58,7 @@ export default function App() {
             <Checkout />
           </ProtectedRoute>
         } />
+        <Route path="/checkout-simulation" element={<CheckoutSimulation />} />
         <Route path="/orders" element={
           <ProtectedRoute>
             <Orders />

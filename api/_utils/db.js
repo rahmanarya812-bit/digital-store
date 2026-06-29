@@ -62,7 +62,9 @@ export const getSettings = () => {
   const defaultSettings = {
     receiptName: 'ARYA STORE',
     receiptTagline: 'Marketplace Produk Digital Premium',
-    receiptPhone: '085808703940'
+    receiptPhone: '085808703940',
+    pakasirProject: '',
+    pakasirApiKey: ''
   };
 
   try {

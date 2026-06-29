@@ -66,6 +66,8 @@ export default function AdminDashboard() {
   const [receiptName, setReceiptName] = useState(localStorage.getItem('receipt_store_name') || 'ARYA STORE');
   const [receiptTagline, setReceiptTagline] = useState(localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium');
   const [receiptPhone, setReceiptPhone] = useState(localStorage.getItem('receipt_store_phone') || '085808703940');
+  const [pakasirProject, setPakasirProject] = useState(localStorage.getItem('receipt_pakasir_project') || '');
+  const [pakasirApiKey, setPakasirApiKey] = useState(localStorage.getItem('receipt_pakasir_api_key') || '');
 
   const fetchStats = () => {
     adminService.getStats()
@@ -95,9 +97,13 @@ export default function AdminDashboard() {
           setReceiptName(data.settings.receiptName || 'ARYA STORE');
           setReceiptTagline(data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
           setReceiptPhone(data.settings.receiptPhone || '085808703940');
+          setPakasirProject(data.settings.pakasirProject || '');
+          setPakasirApiKey(data.settings.pakasirApiKey || '');
           localStorage.setItem('receipt_store_name', data.settings.receiptName || 'ARYA STORE');
           localStorage.setItem('receipt_store_tagline', data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
           localStorage.setItem('receipt_store_phone', data.settings.receiptPhone || '085808703940');
+          localStorage.setItem('receipt_pakasir_project', data.settings.pakasirProject || '');
+          localStorage.setItem('receipt_pakasir_api_key', data.settings.pakasirApiKey || '');
         }
       })
       .catch(err => console.error('Fetch settings error:', err));
@@ -108,9 +114,13 @@ export default function AdminDashboard() {
       await settingsService.update({
         receiptName,
         receiptTagline,
-        receiptPhone
+        receiptPhone,
+        pakasirProject,
+        pakasirApiKey
       });
-      alert('Pengaturan struk berhasil disimpan ke server!');
+      localStorage.setItem('receipt_pakasir_project', pakasirProject);
+      localStorage.setItem('receipt_pakasir_api_key', pakasirApiKey);
+      alert('Pengaturan struk & Pakasir berhasil disimpan ke server!');
     } catch (err) {
       console.error(err);
       alert('Gagal menyimpan ke server, disimpan secara lokal saja.');
@@ -122,13 +132,19 @@ export default function AdminDashboard() {
       setReceiptName('ARYA STORE');
       setReceiptTagline('Marketplace Produk Digital Premium');
       setReceiptPhone('085808703940');
+      setPakasirProject('');
+      setPakasirApiKey('');
       localStorage.setItem('receipt_store_name', 'ARYA STORE');
       localStorage.setItem('receipt_store_tagline', 'Marketplace Produk Digital Premium');
       localStorage.setItem('receipt_store_phone', '085808703940');
+      localStorage.setItem('receipt_pakasir_project', '');
+      localStorage.setItem('receipt_pakasir_api_key', '');
       await settingsService.update({
         receiptName: 'ARYA STORE',
         receiptTagline: 'Marketplace Produk Digital Premium',
-        receiptPhone: '085808703940'
+        receiptPhone: '085808703940',
+        pakasirProject: '',
+        pakasirApiKey: ''
       });
       alert('Konfigurasi struk direset ke default di server!');
     } catch (err) {
@@ -651,7 +667,7 @@ export default function AdminDashboard() {
               />
             </div>
 
-            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="receiptPhone" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Nomor Telepon / Kontak Toko</label>
               <input
                 type="text"
@@ -662,6 +678,54 @@ export default function AdminDashboard() {
                   localStorage.setItem('receipt_store_phone', e.target.value);
                 }}
                 placeholder="Contoh: 085808703940"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="pakasirProject" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Pakasir Project Slug</label>
+              <input
+                type="text"
+                id="pakasirProject"
+                value={pakasirProject}
+                onChange={(e) => {
+                  setPakasirProject(e.target.value);
+                  localStorage.setItem('receipt_pakasir_project', e.target.value);
+                }}
+                placeholder="Contoh: arya-store"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+              <label htmlFor="pakasirApiKey" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Pakasir API Key</label>
+              <input
+                type="password"
+                id="pakasirApiKey"
+                value={pakasirApiKey}
+                onChange={(e) => {
+                  setPakasirApiKey(e.target.value);
+                  localStorage.setItem('receipt_pakasir_api_key', e.target.value);
+                }}
+                placeholder="Masukkan API Key Proyek Pakasir Anda"
                 style={{
                   width: '100%',
                   padding: '0.75rem',
