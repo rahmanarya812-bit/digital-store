@@ -149,6 +149,16 @@
   transform-origin: top center;
 }
 
+.receipt-paper h2,
+.receipt-paper h3,
+.receipt-paper h4,
+.receipt-paper p,
+.receipt-paper div,
+.receipt-paper span,
+.receipt-paper strong {
+  color: #1a1a1a !important;
+}
+
 /* Jagged top/bottom edge for paper strip */
 .receipt-paper::before,
 .receipt-paper::after {
