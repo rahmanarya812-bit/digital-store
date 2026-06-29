@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FiDownload, FiFileText, FiCalendar } from 'react-icons/fi';
+import { toPng } from 'html-to-image';
 import { orderService } from '../services/orderService';
 import './Orders.css';
 
@@ -8,6 +9,8 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeReceiptOrder, setActiveReceiptOrder] = useState(null);
+  const receiptRef = useRef(null);
+  const [downloadingImage, setDownloadingImage] = useState(false);
 
   useEffect(() => {
     orderService.getAll()
@@ -77,6 +80,34 @@ export default function Orders() {
     document.body.removeChild(element);
   };
 
+  const downloadReceiptImage = (orderId) => {
+    if (!receiptRef.current) return;
+    setDownloadingImage(true);
+
+    toPng(receiptRef.current, { 
+      filter: (node) => {
+        return !(node.classList && node.classList.contains('receipt-actions'));
+      },
+      backgroundColor: '#fcfbf7',
+      style: {
+        transform: 'scale(1)',
+      },
+      pixelRatio: 2
+    })
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = `Struk_AryaStore_#${orderId}.png`;
+        link.href = dataUrl;
+        link.click();
+        setDownloadingImage(false);
+      })
+      .catch((err) => {
+        console.error('Download receipt image error:', err);
+        setDownloadingImage(false);
+        alert('Gagal mengunduh struk sebagai gambar. Silakan coba lagi.');
+      });
+  };
+
   return (
     <div className="page orders-page container animate-fadeIn">
       <h1 className="section-title">Pesanan Saya</h1>
@@ -141,7 +172,7 @@ export default function Orders() {
       {activeReceiptOrder && (
         <div className="receipt-modal-overlay" onClick={() => setActiveReceiptOrder(null)}>
           <div className="receipt-paper-wrapper" onClick={(e) => e.stopPropagation()}>
-            <div className="receipt-paper">
+            <div ref={receiptRef} className="receipt-paper">
               <div className="receipt-header">
                 <h2>{localStorage.getItem('receipt_store_name') || 'ARYA STORE'}</h2>
                 <p>{localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium'}</p>
@@ -212,8 +243,12 @@ export default function Orders() {
               </div>
 
               <div className="receipt-actions">
-                <button className="btn btn-receipt-download" onClick={() => downloadReceiptTxt(activeReceiptOrder)}>
-                  Unduh Struk (.TXT)
+                <button 
+                  className="btn btn-receipt-download" 
+                  onClick={() => downloadReceiptImage(activeReceiptOrder.id)}
+                  disabled={downloadingImage}
+                >
+                  {downloadingImage ? 'Mengunduh...' : 'Unduh Struk (PNG)'}
                 </button>
                 <button className="btn btn-receipt-close" onClick={() => setActiveReceiptOrder(null)}>
                   Tutup
