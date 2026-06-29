@@ -30,12 +30,18 @@ export default function Orders() {
     settingsService.get()
       .then(data => {
         if (data && data.settings) {
-          setReceiptName(data.settings.receiptName || 'ARYA STORE');
-          setReceiptTagline(data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
-          setReceiptPhone(data.settings.receiptPhone || '085808703940');
-          localStorage.setItem('receipt_store_name', data.settings.receiptName || 'ARYA STORE');
-          localStorage.setItem('receipt_store_tagline', data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
-          localStorage.setItem('receipt_store_phone', data.settings.receiptPhone || '085808703940');
+          if (data.settings.receiptName) {
+            setReceiptName(data.settings.receiptName);
+            localStorage.setItem('receipt_store_name', data.settings.receiptName);
+          }
+          if (data.settings.receiptTagline) {
+            setReceiptTagline(data.settings.receiptTagline);
+            localStorage.setItem('receipt_store_tagline', data.settings.receiptTagline);
+          }
+          if (data.settings.receiptPhone) {
+            setReceiptPhone(data.settings.receiptPhone);
+            localStorage.setItem('receipt_store_phone', data.settings.receiptPhone);
+          }
         }
       })
       .catch(err => console.error('Fetch settings error:', err));
