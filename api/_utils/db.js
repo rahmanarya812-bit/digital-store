@@ -73,7 +73,7 @@ const defaultSettings = {
 
 export const getSettings = async () => {
   // If Vercel KV is connected, load settings from Vercel KV
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     const kvData = await kvCall('GET', ['store:settings']);
     if (kvData) {
       try {
@@ -107,7 +107,7 @@ export const saveSettings = async (settings) => {
   memorySettings = settings;
 
   // Sync settings to Vercel KV
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     await kvCall('SET', ['store:settings', JSON.stringify(settings)]);
   }
 

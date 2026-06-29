@@ -14,7 +14,7 @@ const getUsersDbPath = () => path.join(process.cwd(), 'api', '_data', 'users.jso
 const getLogsDbPath = () => path.join(process.cwd(), 'api', '_data', 'login_logs.json');
 
 export async function getUsers() {
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     const kvData = await kvCall('GET', ['store:users']);
     if (kvData) {
       try {
@@ -57,7 +57,7 @@ export async function createUser(name, email, password) {
   
   memoryUsers = list;
 
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     await kvCall('SET', ['store:users', JSON.stringify(list)]);
   }
   
@@ -72,7 +72,7 @@ export async function createUser(name, email, password) {
 }
 
 export async function getLoginLogs() {
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     const kvData = await kvCall('GET', ['store:logs']);
     if (kvData) {
       try {
@@ -115,7 +115,7 @@ export async function addLoginLog(email, action, userAgent = '') {
   const cappedLogs = logs.slice(0, 200);
   memoryLogs = cappedLogs;
 
-  if (process.env.KV_REST_API_URL) {
+  if (process.env.KV_REDIS_URL) {
     await kvCall('SET', ['store:logs', JSON.stringify(cappedLogs)]);
   }
   
