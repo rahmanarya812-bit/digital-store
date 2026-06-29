@@ -3,6 +3,7 @@ import { FiDownload, FiDollarSign, FiCpu, FiShoppingBag, FiActivity, FiUpload, F
 import { adminService } from '../services/adminService';
 import { orderService } from '../services/orderService';
 import { productService } from '../services/productService';
+import { settingsService } from '../services/settingsService';
 import './AdminDashboard.css';
 
 const STOCK_FORM_OPTIONS = [
@@ -87,9 +88,59 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchSettings = () => {
+    settingsService.get()
+      .then(data => {
+        if (data && data.settings) {
+          setReceiptName(data.settings.receiptName || 'ARYA STORE');
+          setReceiptTagline(data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
+          setReceiptPhone(data.settings.receiptPhone || '085808703940');
+          localStorage.setItem('receipt_store_name', data.settings.receiptName || 'ARYA STORE');
+          localStorage.setItem('receipt_store_tagline', data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
+          localStorage.setItem('receipt_store_phone', data.settings.receiptPhone || '085808703940');
+        }
+      })
+      .catch(err => console.error('Fetch settings error:', err));
+  };
+
+  const handleSaveSettings = async () => {
+    try {
+      await settingsService.update({
+        receiptName,
+        receiptTagline,
+        receiptPhone
+      });
+      alert('Pengaturan struk berhasil disimpan ke server!');
+    } catch (err) {
+      console.error(err);
+      alert('Gagal menyimpan ke server, disimpan secara lokal saja.');
+    }
+  };
+
+  const handleResetSettings = async () => {
+    try {
+      setReceiptName('ARYA STORE');
+      setReceiptTagline('Marketplace Produk Digital Premium');
+      setReceiptPhone('085808703940');
+      localStorage.setItem('receipt_store_name', 'ARYA STORE');
+      localStorage.setItem('receipt_store_tagline', 'Marketplace Produk Digital Premium');
+      localStorage.setItem('receipt_store_phone', '085808703940');
+      await settingsService.update({
+        receiptName: 'ARYA STORE',
+        receiptTagline: 'Marketplace Produk Digital Premium',
+        receiptPhone: '085808703940'
+      });
+      alert('Konfigurasi struk direset ke default di server!');
+    } catch (err) {
+      console.error(err);
+      alert('Reset lokal berhasil.');
+    }
+  };
+
   useEffect(() => {
     fetchStats();
     fetchProducts();
+    fetchSettings();
   }, []);
 
   useEffect(() => {
@@ -628,24 +679,14 @@ export default function AdminDashboard() {
               <button 
                 type="button" 
                 className="btn btn-primary"
-                onClick={() => {
-                  alert('Pengaturan struk berhasil disimpan!');
-                }}
+                onClick={handleSaveSettings}
               >
                 Simpan
               </button>
               <button 
                 type="button" 
                 className="btn btn-secondary"
-                onClick={() => {
-                  setReceiptName('ARYA STORE');
-                  setReceiptTagline('Marketplace Produk Digital Premium');
-                  setReceiptPhone('085808703940');
-                  localStorage.setItem('receipt_store_name', 'ARYA STORE');
-                  localStorage.setItem('receipt_store_tagline', 'Marketplace Produk Digital Premium');
-                  localStorage.setItem('receipt_store_phone', '085808703940');
-                  alert('Konfigurasi struk direset ke default!');
-                }}
+                onClick={handleResetSettings}
               >
                 Reset Default
               </button>

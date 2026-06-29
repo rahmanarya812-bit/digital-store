@@ -52,3 +52,40 @@ export const saveProducts = (products) => {
     console.warn('DB Write Warning:', err.message);
   }
 };
+
+const getSettingsDbPath = () => path.join(process.cwd(), 'api', '_data', 'settings.json');
+let memorySettings = null;
+
+export const getSettings = () => {
+  if (memorySettings) return memorySettings;
+  
+  const defaultSettings = {
+    receiptName: 'ARYA STORE',
+    receiptTagline: 'Marketplace Produk Digital Premium',
+    receiptPhone: '085808703940'
+  };
+
+  try {
+    const filePath = getSettingsDbPath();
+    if (!fs.existsSync(filePath)) {
+      memorySettings = defaultSettings;
+      return defaultSettings;
+    }
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    memorySettings = { ...defaultSettings, ...data };
+    return memorySettings;
+  } catch (err) {
+    console.error('Settings Read Error:', err);
+    return defaultSettings;
+  }
+};
+
+export const saveSettings = (settings) => {
+  memorySettings = settings;
+  try {
+    const filePath = getSettingsDbPath();
+    fs.writeFileSync(filePath, JSON.stringify(settings, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Settings Write Warning:', err.message);
+  }
+};

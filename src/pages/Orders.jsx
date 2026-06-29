@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiDownload, FiFileText, FiCalendar } from 'react-icons/fi';
 import { toPng } from 'html-to-image';
 import { orderService } from '../services/orderService';
+import { settingsService } from '../services/settingsService';
 import './Orders.css';
 
 export default function Orders() {
@@ -11,6 +12,9 @@ export default function Orders() {
   const [activeReceiptOrder, setActiveReceiptOrder] = useState(null);
   const receiptRef = useRef(null);
   const [downloadingImage, setDownloadingImage] = useState(false);
+  const [receiptName, setReceiptName] = useState(localStorage.getItem('receipt_store_name') || 'ARYA STORE');
+  const [receiptTagline, setReceiptTagline] = useState(localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium');
+  const [receiptPhone, setReceiptPhone] = useState(localStorage.getItem('receipt_store_phone') || '085808703940');
 
   useEffect(() => {
     orderService.getAll()
@@ -22,6 +26,19 @@ export default function Orders() {
         console.error(err);
         setLoading(false);
       });
+
+    settingsService.get()
+      .then(data => {
+        if (data && data.settings) {
+          setReceiptName(data.settings.receiptName || 'ARYA STORE');
+          setReceiptTagline(data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
+          setReceiptPhone(data.settings.receiptPhone || '085808703940');
+          localStorage.setItem('receipt_store_name', data.settings.receiptName || 'ARYA STORE');
+          localStorage.setItem('receipt_store_tagline', data.settings.receiptTagline || 'Marketplace Produk Digital Premium');
+          localStorage.setItem('receipt_store_phone', data.settings.receiptPhone || '085808703940');
+        }
+      })
+      .catch(err => console.error('Fetch settings error:', err));
   }, []);
 
   const formatPrice = (price) => {
@@ -39,8 +56,8 @@ export default function Orders() {
   };
 
   const downloadReceiptTxt = (order) => {
-    const storeName = localStorage.getItem('receipt_store_name') || 'ARYA STORE';
-    const storeTagline = localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium';
+    const storeName = receiptName;
+    const storeTagline = receiptTagline;
     const divider = "========================================\n";
     const line = "----------------------------------------\n";
     let txt = "";
@@ -208,9 +225,9 @@ export default function Orders() {
           <div className="receipt-paper-wrapper" onClick={(e) => e.stopPropagation()}>
             <div ref={receiptRef} className="receipt-paper">
               <div className="receipt-header">
-                <h2>{localStorage.getItem('receipt_store_name') || 'ARYA STORE'}</h2>
-                <p>{localStorage.getItem('receipt_store_tagline') || 'Marketplace Produk Digital Premium'}</p>
-                <p>Telp: {localStorage.getItem('receipt_store_phone') || '085808703940'}</p>
+                <h2>{receiptName}</h2>
+                <p>{receiptTagline}</p>
+                <p>Telp: {receiptPhone}</p>
               </div>
 
               <div className="receipt-info-row">
