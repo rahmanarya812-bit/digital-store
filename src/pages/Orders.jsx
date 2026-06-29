@@ -305,7 +305,7 @@ export default function Orders() {
                   onClick={() => downloadReceiptImage(activeReceiptOrder.id)}
                   disabled={downloadingImage}
                 >
-                  {downloadingImage ? 'Mengunduh...' : 'Unduh Struk (PNG)'}
+                  {downloadingImage ? 'Mengunduh...' : 'Unduh Struk'}
                 </button>
                 <button className="btn btn-receipt-close" onClick={() => setActiveReceiptOrder(null)}>
                   Tutup
