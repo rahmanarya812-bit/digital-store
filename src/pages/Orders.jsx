@@ -108,6 +108,40 @@ export default function Orders() {
       });
   };
 
+  const handleDirectDownloadImage = (order) => {
+    setActiveReceiptOrder(order);
+    
+    setTimeout(() => {
+      const paperElement = document.querySelector('.receipt-paper');
+      if (paperElement) {
+        toPng(paperElement, {
+          filter: (node) => {
+            return !(node.classList && node.classList.contains('receipt-actions'));
+          },
+          backgroundColor: '#fcfbf7',
+          style: {
+            transform: 'scale(1)',
+          },
+          pixelRatio: 2
+        })
+          .then((dataUrl) => {
+            const link = document.createElement('a');
+            link.download = `Struk_AryaStore_#${order.id}.png`;
+            link.href = dataUrl;
+            link.click();
+            setActiveReceiptOrder(null);
+          })
+          .catch((err) => {
+            console.error('Direct download image error:', err);
+            setActiveReceiptOrder(null);
+            alert('Gagal mengunduh gambar struk.');
+          });
+      } else {
+        setActiveReceiptOrder(null);
+      }
+    }, 150);
+  };
+
   return (
     <div className="page orders-page container animate-fadeIn">
       <h1 className="section-title">Pesanan Saya</h1>
@@ -150,7 +184,7 @@ export default function Orders() {
                       <span>Kuantitas: {item.quantity}</span>
                     </div>
                     <div className="order-item-actions">
-                      <button className="btn btn-secondary btn-sm" onClick={() => alert('Mengunduh file produk... file siap!')}>
+                      <button className="btn btn-secondary btn-sm" onClick={() => handleDirectDownloadImage(order)}>
                         <FiDownload size={14} /> Unduh File
                       </button>
                       <button className="btn btn-secondary btn-sm" onClick={() => alert(item.deliveredAccounts ? `Lisensi/Akun:\n${item.deliveredAccounts.join('\n')}` : `Lisensi/Akun:\nACTV-${(Math.random()*1e9).toFixed(0)}-LICS`)}>
