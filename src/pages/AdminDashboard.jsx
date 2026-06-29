@@ -697,6 +697,7 @@ export default function AdminDashboard() {
                 type="text"
                 id="pakasirProject"
                 value={pakasirProject}
+                autoComplete="new-password"
                 onChange={(e) => {
                   setPakasirProject(e.target.value);
                   localStorage.setItem('receipt_pakasir_project', e.target.value);
@@ -721,6 +722,7 @@ export default function AdminDashboard() {
                 type="password"
                 id="pakasirApiKey"
                 value={pakasirApiKey}
+                autoComplete="new-password"
                 onChange={(e) => {
                   setPakasirApiKey(e.target.value);
                   localStorage.setItem('receipt_pakasir_api_key', e.target.value);
