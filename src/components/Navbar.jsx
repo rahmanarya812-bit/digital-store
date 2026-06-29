@@ -37,7 +37,7 @@ export default function Navbar() {
     <nav className="navbar glass">
       <div className="navbar-inner container">
         <Link to="/" className="navbar-brand">
-          <span className="brand-icon">⚡</span>
+          <img src="/logo.png" alt="Logo" className="brand-logo-img" />
           <span className="brand-text">Arya Store</span>
         </Link>
 

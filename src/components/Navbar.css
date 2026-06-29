@@ -27,8 +27,18 @@
   flex-shrink: 0;
 }
 
-.brand-icon {
-  font-size: 1.6rem;
+.brand-logo-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(108, 99, 255, 0.35);
+  transition: transform var(--transition-normal) ease-in-out;
+}
+
+.navbar-brand:hover .brand-logo-img {
+  transform: rotate(360deg) scale(1.1);
 }
 
 .brand-text {
