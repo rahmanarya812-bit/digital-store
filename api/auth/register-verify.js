@@ -2,7 +2,7 @@ import { findUserByEmail, createUser, addLoginLog } from '../_data/users.js';
 import { createToken } from '../_utils/auth.js';
 import { verifyOtpToken } from '../_utils/otp.js';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -21,16 +21,16 @@ export default function handler(req, res) {
   const { name, email, password } = payload;
 
   // Double check if already registered in the database
-  if (findUserByEmail(email)) {
+  if (await findUserByEmail(email)) {
     return res.status(409).json({ error: 'Email sudah terdaftar di sistem' });
   }
 
   // Create the persistent user record
-  const user = createUser(name, email, password);
+  const user = await createUser(name, email, password);
 
   // Add registration to the logs
   const userAgent = req.headers['user-agent'] || '';
-  addLoginLog(email, 'REGISTER', userAgent);
+  await addLoginLog(email, 'REGISTER', userAgent);
 
   // Create authentication token
   const token = createToken(user);

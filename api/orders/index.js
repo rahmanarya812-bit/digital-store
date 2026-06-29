@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     if (!items || !items.length) return res.status(400).json({ error: 'Order items required' });
 
     const orderId = nextOrderId++;
-    const settings = getSettings();
+    const settings = await getSettings();
 
     // 1. If QRIS dynamic checkout:
     if (paymentMethod === 'qris') {

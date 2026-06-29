@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { kvCall } from '../_utils/kv.js';
 
 const defaultUsers = [
   { id: 1, name: 'Admin User', email: 'admin@store.com', password: 'admin123', role: 'admin', avatar: null },
@@ -12,7 +13,20 @@ let memoryLogs = null;
 const getUsersDbPath = () => path.join(process.cwd(), 'api', '_data', 'users.json');
 const getLogsDbPath = () => path.join(process.cwd(), 'api', '_data', 'login_logs.json');
 
-export function getUsers() {
+export async function getUsers() {
+  if (process.env.KV_REST_API_URL) {
+    const kvData = await kvCall('GET', ['store:users']);
+    if (kvData) {
+      try {
+        const parsed = JSON.parse(kvData);
+        memoryUsers = parsed;
+        return parsed;
+      } catch (err) {
+        console.error('KV Users Parse Error:', err);
+      }
+    }
+  }
+
   if (memoryUsers) return memoryUsers;
   
   try {
@@ -30,18 +44,22 @@ export function getUsers() {
   }
 }
 
-export function findUserByEmail(email) {
-  const list = getUsers();
+export async function findUserByEmail(email) {
+  const list = await getUsers();
   return list.find(u => u.email.toLowerCase() === email.toLowerCase());
 }
 
-export function createUser(name, email, password) {
-  const list = getUsers();
+export async function createUser(name, email, password) {
+  const list = await getUsers();
   const nextId = list.reduce((max, u) => Math.max(max, u.id), 0) + 1;
   const newUser = { id: nextId, name, email, password, role: 'customer', avatar: null };
   list.push(newUser);
   
   memoryUsers = list;
+
+  if (process.env.KV_REST_API_URL) {
+    await kvCall('SET', ['store:users', JSON.stringify(list)]);
+  }
   
   try {
     const filePath = getUsersDbPath();
@@ -53,7 +71,20 @@ export function createUser(name, email, password) {
   return newUser;
 }
 
-export function getLoginLogs() {
+export async function getLoginLogs() {
+  if (process.env.KV_REST_API_URL) {
+    const kvData = await kvCall('GET', ['store:logs']);
+    if (kvData) {
+      try {
+        const parsed = JSON.parse(kvData);
+        memoryLogs = parsed;
+        return parsed;
+      } catch (err) {
+        console.error('KV Logs Parse Error:', err);
+      }
+    }
+  }
+
   if (memoryLogs) return memoryLogs;
   
   try {
@@ -71,8 +102,8 @@ export function getLoginLogs() {
   }
 }
 
-export function addLoginLog(email, action, userAgent = '') {
-  const logs = getLoginLogs();
+export async function addLoginLog(email, action, userAgent = '') {
+  const logs = await getLoginLogs();
   const newLog = {
     timestamp: new Date().toISOString(),
     email,
@@ -81,9 +112,12 @@ export function addLoginLog(email, action, userAgent = '') {
   };
   
   logs.unshift(newLog); // Put newest logs first
-  // Cap at 200 logs to prevent file bloat
   const cappedLogs = logs.slice(0, 200);
   memoryLogs = cappedLogs;
+
+  if (process.env.KV_REST_API_URL) {
+    await kvCall('SET', ['store:logs', JSON.stringify(cappedLogs)]);
+  }
   
   try {
     const filePath = getLogsDbPath();

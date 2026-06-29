@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
 
   // Check if already registered
-  if (findUserByEmail(email)) {
+  if (await findUserByEmail(email)) {
     return res.status(409).json({ error: 'Email already registered' });
   }
 
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
   // Load SMTP settings
-  const settings = getSettings();
+  const settings = await getSettings();
   const isSmtpConfigured = settings.smtpHost && settings.smtpUser && settings.smtpPass;
 
   let emailSent = false;

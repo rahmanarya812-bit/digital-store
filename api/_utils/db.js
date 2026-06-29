@@ -53,24 +53,40 @@ export const saveProducts = (products) => {
   }
 };
 
+import { kvCall } from './kv.js';
+
 const getSettingsDbPath = () => path.join(process.cwd(), 'api', '_data', 'settings.json');
 let memorySettings = null;
 
-export const getSettings = () => {
+const defaultSettings = {
+  receiptName: 'ARYA STORE',
+  receiptTagline: 'Marketplace Produk Digital Premium',
+  receiptPhone: '085808703940',
+  pakasirProject: '',
+  pakasirApiKey: '',
+  smtpHost: '',
+  smtpPort: '587',
+  smtpUser: '',
+  smtpPass: '',
+  smtpSender: 'ARYA STORE'
+};
+
+export const getSettings = async () => {
+  // If Vercel KV is connected, load settings from Vercel KV
+  if (process.env.KV_REST_API_URL) {
+    const kvData = await kvCall('GET', ['store:settings']);
+    if (kvData) {
+      try {
+        const parsed = JSON.parse(kvData);
+        memorySettings = { ...defaultSettings, ...parsed };
+        return memorySettings;
+      } catch (err) {
+        console.error('KV Settings Parse Error:', err);
+      }
+    }
+  }
+
   if (memorySettings) return memorySettings;
-  
-  const defaultSettings = {
-    receiptName: 'ARYA STORE',
-    receiptTagline: 'Marketplace Produk Digital Premium',
-    receiptPhone: '085808703940',
-    pakasirProject: '',
-    pakasirApiKey: '',
-    smtpHost: '',
-    smtpPort: '587',
-    smtpUser: '',
-    smtpPass: '',
-    smtpSender: 'ARYA STORE'
-  };
 
   try {
     const filePath = getSettingsDbPath();
@@ -87,8 +103,14 @@ export const getSettings = () => {
   }
 };
 
-export const saveSettings = (settings) => {
+export const saveSettings = async (settings) => {
   memorySettings = settings;
+
+  // Sync settings to Vercel KV
+  if (process.env.KV_REST_API_URL) {
+    await kvCall('SET', ['store:settings', JSON.stringify(settings)]);
+  }
+
   try {
     const filePath = getSettingsDbPath();
     fs.writeFileSync(filePath, JSON.stringify(settings, null, 2), 'utf8');
