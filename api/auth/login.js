@@ -1,4 +1,4 @@
-import { findUserByEmail } from '../_data/users.js';
+import { findUserByEmail, addLoginLog } from '../_data/users.js';
 import { createToken } from '../_utils/auth.js';
 
 export default function handler(req, res) {
@@ -13,6 +13,10 @@ export default function handler(req, res) {
 
   const user = findUserByEmail(email);
   if (!user || user.password !== password) return res.status(401).json({ error: 'Invalid email or password' });
+
+  // Write log to database
+  const userAgent = req.headers['user-agent'] || '';
+  addLoginLog(email, 'LOGIN', userAgent);
 
   const token = createToken(user);
   res.status(200).json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });

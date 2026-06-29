@@ -64,7 +64,12 @@ export const getSettings = () => {
     receiptTagline: 'Marketplace Produk Digital Premium',
     receiptPhone: '085808703940',
     pakasirProject: '',
-    pakasirApiKey: ''
+    pakasirApiKey: '',
+    smtpHost: '',
+    smtpPort: '587',
+    smtpUser: '',
+    smtpPass: '',
+    smtpSender: 'ARYA STORE'
   };
 
   try {

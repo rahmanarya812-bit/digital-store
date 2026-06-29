@@ -46,6 +46,32 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  sendOtp: async (name, email, password) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.sendOtp(name, email, password);
+      set({ loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
+  verifyOtp: async (otp, otpToken) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.verifyOtp(otp, otpToken);
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_user', JSON.stringify(data.user));
+      set({ user: data.user, token: data.token, isLoggedIn: true, loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
   logout: () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');

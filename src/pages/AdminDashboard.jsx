@@ -68,6 +68,14 @@ export default function AdminDashboard() {
   const [receiptPhone, setReceiptPhone] = useState(localStorage.getItem('receipt_store_phone') || '085808703940');
   const [pakasirProject, setPakasirProject] = useState(localStorage.getItem('receipt_pakasir_project') || '');
   const [pakasirApiKey, setPakasirApiKey] = useState(localStorage.getItem('receipt_pakasir_api_key') || '');
+  const [smtpHost, setSmtpHost] = useState(localStorage.getItem('receipt_smtp_host') || '');
+  const [smtpPort, setSmtpPort] = useState(localStorage.getItem('receipt_smtp_port') || '587');
+  const [smtpUser, setSmtpUser] = useState(localStorage.getItem('receipt_smtp_user') || '');
+  const [smtpPass, setSmtpPass] = useState(localStorage.getItem('receipt_smtp_pass') || '');
+  const [smtpSender, setSmtpSender] = useState(localStorage.getItem('receipt_smtp_sender') || 'ARYA STORE');
+  const [usersList, setUsersList] = useState([]);
+  const [loginLogs, setLoginLogs] = useState([]);
+  const [loadingUsersTab, setLoadingUsersTab] = useState(false);
 
   const fetchStats = () => {
     adminService.getStats()
@@ -114,6 +122,26 @@ export default function AdminDashboard() {
             setPakasirApiKey(data.settings.pakasirApiKey);
             localStorage.setItem('receipt_pakasir_api_key', data.settings.pakasirApiKey);
           }
+          if (data.settings.smtpHost) {
+            setSmtpHost(data.settings.smtpHost);
+            localStorage.setItem('receipt_smtp_host', data.settings.smtpHost);
+          }
+          if (data.settings.smtpPort) {
+            setSmtpPort(data.settings.smtpPort);
+            localStorage.setItem('receipt_smtp_port', data.settings.smtpPort);
+          }
+          if (data.settings.smtpUser) {
+            setSmtpUser(data.settings.smtpUser);
+            localStorage.setItem('receipt_smtp_user', data.settings.smtpUser);
+          }
+          if (data.settings.smtpPass) {
+            setSmtpPass(data.settings.smtpPass);
+            localStorage.setItem('receipt_smtp_pass', data.settings.smtpPass);
+          }
+          if (data.settings.smtpSender) {
+            setSmtpSender(data.settings.smtpSender);
+            localStorage.setItem('receipt_smtp_sender', data.settings.smtpSender);
+          }
         }
       })
       .catch(err => console.error('Fetch settings error:', err));
@@ -126,11 +154,21 @@ export default function AdminDashboard() {
         receiptTagline,
         receiptPhone,
         pakasirProject,
-        pakasirApiKey
+        pakasirApiKey,
+        smtpHost,
+        smtpPort,
+        smtpUser,
+        smtpPass,
+        smtpSender
       });
       localStorage.setItem('receipt_pakasir_project', pakasirProject);
       localStorage.setItem('receipt_pakasir_api_key', pakasirApiKey);
-      alert('Pengaturan struk & Pakasir berhasil disimpan ke server!');
+      localStorage.setItem('receipt_smtp_host', smtpHost);
+      localStorage.setItem('receipt_smtp_port', smtpPort);
+      localStorage.setItem('receipt_smtp_user', smtpUser);
+      localStorage.setItem('receipt_smtp_pass', smtpPass);
+      localStorage.setItem('receipt_smtp_sender', smtpSender);
+      alert('Pengaturan situs, Pakasir, & SMTP berhasil disimpan ke server!');
     } catch (err) {
       console.error(err);
       alert('Gagal menyimpan ke server, disimpan secara lokal saja.');
@@ -144,22 +182,47 @@ export default function AdminDashboard() {
       setReceiptPhone('085808703940');
       setPakasirProject('');
       setPakasirApiKey('');
+      setSmtpHost('');
+      setSmtpPort('587');
+      setSmtpUser('');
+      setSmtpPass('');
+      setSmtpSender('ARYA STORE');
       localStorage.setItem('receipt_store_name', 'ARYA STORE');
       localStorage.setItem('receipt_store_tagline', 'Marketplace Produk Digital Premium');
       localStorage.setItem('receipt_store_phone', '085808703940');
       localStorage.setItem('receipt_pakasir_project', '');
       localStorage.setItem('receipt_pakasir_api_key', '');
+      localStorage.setItem('receipt_smtp_host', '');
+      localStorage.setItem('receipt_smtp_port', '587');
+      localStorage.setItem('receipt_smtp_user', '');
+      localStorage.setItem('receipt_smtp_pass', '');
+      localStorage.setItem('receipt_smtp_sender', 'ARYA STORE');
       await settingsService.update({
         receiptName: 'ARYA STORE',
         receiptTagline: 'Marketplace Produk Digital Premium',
         receiptPhone: '085808703940',
         pakasirProject: '',
-        pakasirApiKey: ''
+        pakasirApiKey: '',
+        smtpHost: '',
+        smtpPort: '587',
+        smtpUser: '',
+        smtpPass: '',
+        smtpSender: 'ARYA STORE'
       });
-      alert('Konfigurasi struk direset ke default di server!');
+      alert('Konfigurasi situs direset ke default di server!');
     } catch (err) {
       console.error(err);
       alert('Reset lokal berhasil.');
+    }
+  };
+
+  const fetchUsersAndLogs = async () => {
+    try {
+      const data = await adminService.getUsersAndLogs();
+      setUsersList(data.users || []);
+      setLoginLogs(data.logs || []);
+    } catch (err) {
+      console.error('Fetch users and logs error:', err);
     }
   };
 
@@ -168,6 +231,12 @@ export default function AdminDashboard() {
     fetchProducts();
     fetchSettings();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'users') {
+      fetchUsersAndLogs();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (activeTab === 'products') {
@@ -403,6 +472,12 @@ export default function AdminDashboard() {
           onClick={() => setActiveTab('settings')}
         >
           ⚙️ Pengaturan Struk
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'users' ? 'active' : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          👥 Pengguna & Log
         </button>
       </div>
 
@@ -750,6 +825,119 @@ export default function AdminDashboard() {
                 }}
               />
             </div>
+
+            <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '2rem 0 1.5rem 0' }} />
+            
+            <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)', fontSize: '1.1rem', fontWeight: '700' }}>✉️ Pengaturan SMTP / Pengirim OTP</h3>
+            <p style={{ fontSize: '0.8rem', color: '#a0aec0', marginBottom: '1.25rem', lineHeight: '1.4' }}>
+              Isi data di bawah ini menggunakan akun email aktif Anda (misalnya Gmail App Password) agar kode verifikasi OTP pendaftaran terkirim langsung ke email aktif pembeli secara otomatis.
+            </p>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="smtpHost" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>SMTP Host</label>
+              <input
+                type="text"
+                id="smtpHost"
+                value={smtpHost}
+                onChange={(e) => setSmtpHost(e.target.value)}
+                placeholder="Contoh: smtp.gmail.com"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="smtpPort" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>SMTP Port</label>
+              <input
+                type="text"
+                id="smtpPort"
+                value={smtpPort}
+                onChange={(e) => setSmtpPort(e.target.value)}
+                placeholder="Contoh: 465 atau 587"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="smtpUser" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>SMTP User (Email Pengirim)</label>
+              <input
+                type="text"
+                id="smtpUser"
+                value={smtpUser}
+                onChange={(e) => setSmtpUser(e.target.value)}
+                placeholder="Contoh: tokoanda@gmail.com"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label htmlFor="smtpPass" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>SMTP Password / App Password</label>
+              <input
+                type="password"
+                id="smtpPass"
+                value={smtpPass}
+                autoComplete="new-password"
+                onChange={(e) => setSmtpPass(e.target.value)}
+                placeholder="Masukkan Sandi Aplikasi Email Anda"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.75rem' }}>
+              <label htmlFor="smtpSender" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem', color: 'var(--text-primary)' }}>Nama Pengirim Email</label>
+              <input
+                type="text"
+                id="smtpSender"
+                value={smtpSender}
+                onChange={(e) => setSmtpSender(e.target.value)}
+                placeholder="Contoh: ARYA STORE"
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '6px',
+                  color: 'white',
+                  outline: 'none',
+                  fontSize: '0.95rem'
+                }}
+              />
+            </div>
             
             <div style={{ display: 'flex', gap: '1rem' }}>
               <button 
@@ -830,6 +1018,98 @@ export default function AdminDashboard() {
                 <span className="barcode-line" style={{ width: '4px' }}></span>
                 <span className="barcode-line" style={{ width: '2px' }}></span>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'users' && (
+        <div className="users-tab-content glass animate-fadeIn" style={{ padding: '2.25rem', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2.25rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>👥 Daftar Pengguna Terdaftar</h2>
+            <p style={{ fontSize: '0.85rem', color: '#a0aec0', marginBottom: '1.5rem' }}>Berikut adalah daftar pelanggan yang telah mendaftar akun di situs Anda:</p>
+            
+            <div style={{ overflowX: 'auto', background: 'rgba(0,0,0,0.15)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                    <th style={{ padding: '1rem' }}>ID</th>
+                    <th style={{ padding: '1rem' }}>Nama Lengkap</th>
+                    <th style={{ padding: '1rem' }}>Email</th>
+                    <th style={{ padding: '1rem' }}>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {usersList.map((usr) => (
+                    <tr key={usr.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>#{usr.id}</td>
+                      <td style={{ padding: '1rem', fontWeight: '600', color: '#ffffff' }}>{usr.name}</td>
+                      <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{usr.email}</td>
+                      <td style={{ padding: '1rem' }}>
+                        <span style={{ 
+                          background: usr.role === 'admin' ? 'rgba(255, 75, 75, 0.15)' : 'rgba(108, 99, 255, 0.15)', 
+                          color: usr.role === 'admin' ? '#ff4b4b' : '#6c63ff', 
+                          padding: '0.2rem 0.5rem', 
+                          borderRadius: '4px', 
+                          fontSize: '0.75rem', 
+                          fontWeight: '700' 
+                        }}>
+                          {usr.role.toUpperCase()}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                  {usersList.length === 0 && (
+                    <tr>
+                      <td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: '#a0aec0' }}>Belum ada data pengguna terdaftar.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>📋 Log Aktivitas Login Terkini</h2>
+            <p style={{ fontSize: '0.85rem', color: '#a0aec0', marginBottom: '1.5rem' }}>Catatan aktivitas login dan registrasi pengguna secara real-time:</p>
+            
+            <div style={{ overflowX: 'auto', background: 'rgba(0,0,0,0.15)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                    <th style={{ padding: '1rem' }}>Waktu & Tanggal</th>
+                    <th style={{ padding: '1rem' }}>Email Pengguna</th>
+                    <th style={{ padding: '1rem' }}>Aktivitas</th>
+                    <th style={{ padding: '1rem' }}>IP / Browser</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loginLogs.map((log, idx) => (
+                    <tr key={idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                      <td style={{ padding: '1rem', color: 'var(--text-secondary)' }}>{new Date(log.timestamp).toLocaleString('id-ID')}</td>
+                      <td style={{ padding: '1rem', fontWeight: '600', color: '#ffffff' }}>{log.email}</td>
+                      <td style={{ padding: '1rem' }}>
+                        <span style={{ 
+                          background: log.action === 'REGISTER' ? 'rgba(78, 203, 113, 0.15)' : 'rgba(0, 217, 255, 0.15)', 
+                          color: log.action === 'REGISTER' ? '#4ecb71' : '#00d9ff', 
+                          padding: '0.2rem 0.5rem', 
+                          borderRadius: '4px', 
+                          fontSize: '0.75rem', 
+                          fontWeight: '700' 
+                        }}>
+                          {log.action}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem', color: '#a0aec0', fontSize: '0.8rem', fontFamily: 'monospace' }}>{log.userAgent || 'Tidak Diketahui'}</td>
+                    </tr>
+                  ))}
+                  {loginLogs.length === 0 && (
+                    <tr>
+                      <td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: '#a0aec0' }}>Belum ada log masuk tersimpan.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
