@@ -18,8 +18,7 @@ export default async function handler(req, res) {
     
     const user = await findUserByEmail(email);
     if (!user) {
-      // Simulate success to prevent email enumeration, but return a simulated error in sandbox
-      return res.status(200).json({ success: true, simulatedError: 'User not found in DB (simulated)' });
+      return res.status(404).json({ error: 'Email tidak ditemukan. Silakan daftar akun terlebih dahulu.' });
     }
 
     const resetTokenPayload = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
