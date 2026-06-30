@@ -86,7 +86,7 @@ export default function Profile() {
             <FiUser size={40} />
           </div>
           <div>
-            <h1>Profil Saya</h1>
+            <h1>Pengaturan Akun</h1>
             <p>Kelola informasi data diri dan keamanan akun Anda</p>
           </div>
         </div>
