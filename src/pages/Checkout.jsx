@@ -70,7 +70,7 @@ export default function Checkout() {
     setLoading(true);
     try {
       const names = ['Arya Pratama', 'Budi Santoso', 'Siti Rahayu', 'Dewi Lestari', 'Rizky Wijaya'];
-      const emails = ['arya@example.com', 'budi@example.com', 'siti@example.com', 'dewi@example.com', 'rizky@example.com'];
+      const emails = ['arya@gmail.com', 'budi@gmail.com', 'siti@gmail.com', 'dewi@gmail.com', 'rizky@gmail.com'];
       const randomIdx = Math.floor(Math.random() * names.length);
       
       const selectedName = names[randomIdx];
@@ -200,7 +200,7 @@ export default function Checkout() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Contoh: arya@example.com"
+              placeholder="Contoh: arya@gmail.com"
             />
           </div>
 

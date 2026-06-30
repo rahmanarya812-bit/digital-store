@@ -107,7 +107,7 @@ export default function Register() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. john@example.com"
+                  placeholder="e.g. john@gmail.com"
                 />
               </div>
               <div className="form-group">

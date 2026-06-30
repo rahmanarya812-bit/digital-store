@@ -45,7 +45,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. user@store.com"
+              placeholder="e.g. user@gmail.com"
             />
           </div>
           <div className="form-group">
