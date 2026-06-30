@@ -149,6 +149,8 @@ export default function Profile() {
                     <FiUser className="input-icon" />
                     <input 
                       type="text" 
+                      name="name"
+                      autoComplete="name"
                       value={name} 
                       onChange={(e) => setName(e.target.value)} 
                       placeholder="Masukkan nama lengkap"
@@ -162,6 +164,8 @@ export default function Profile() {
                     <FiPhone className="input-icon" />
                     <input 
                       type="tel" 
+                      name="phone"
+                      autoComplete="tel"
                       value={phone} 
                       onChange={(e) => setPhone(e.target.value)} 
                       placeholder="Contoh: 081234567890"
@@ -178,6 +182,8 @@ export default function Profile() {
                   <FiLock className="input-icon" />
                   <input 
                     type="password" 
+                    name="newPassword"
+                    autoComplete="new-password"
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
                     placeholder="Kosongkan jika tidak ingin mengubah sandi"
