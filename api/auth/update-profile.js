@@ -1,4 +1,4 @@
-import { getAuthUser, generateToken } from '../_utils/auth.js';
+import { getAuthUser, createToken } from '../_utils/auth.js';
 import { updateUser } from '../_data/users.js';
 import { verifyOtpToken } from '../_utils/otp.js';
 
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   }
 
   // Generate new auth token because payload might have changed (e.g. name)
-  const newToken = generateToken({
+  const newToken = createToken({
     id: updatedUser.id,
     name: updatedUser.name,
     email: updatedUser.email,
