@@ -3,7 +3,7 @@ import path from 'path';
 import { kvCall } from '../_utils/kv.js';
 
 const defaultUsers = [
-  { id: 1, name: 'Admin User', email: 'admin@store.com', password: 'admin123', role: 'admin', avatar: null },
+  { id: 1, name: 'Admin User', email: 'rahmanarya812@gmail.com', password: 'admin123', role: 'admin', avatar: null },
   { id: 2, name: 'John Customer', email: 'user@store.com', password: 'user123', role: 'customer', avatar: null },
 ];
 
@@ -19,8 +19,14 @@ export async function getUsers() {
     if (kvData) {
       try {
         const parsed = JSON.parse(kvData);
-        memoryUsers = parsed;
-        return parsed;
+        // Force update admin email if it's the default one
+        const forcedParsed = parsed.map(u => 
+          u.id === 1 && u.email === 'admin@store.com' 
+            ? { ...u, email: 'rahmanarya812@gmail.com' } 
+            : u
+        );
+        memoryUsers = forcedParsed;
+        return forcedParsed;
       } catch (err) {
         console.error('KV Users Parse Error:', err);
       }
@@ -36,8 +42,14 @@ export async function getUsers() {
       return memoryUsers;
     }
     const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    memoryUsers = list;
-    return list;
+    // Force update admin email if it's the default one
+    const forcedList = list.map(u => 
+      u.id === 1 && u.email === 'admin@store.com' 
+        ? { ...u, email: 'rahmanarya812@gmail.com' } 
+        : u
+    );
+    memoryUsers = forcedList;
+    return forcedList;
   } catch (err) {
     console.error('Users DB read error:', err);
     return [...defaultUsers];
