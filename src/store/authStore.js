@@ -72,6 +72,32 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  sendProfileOtp: async (newPassword) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.sendProfileOtp(newPassword);
+      set({ loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
+  updateProfile: async (profileData) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.updateProfile(profileData);
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_user', JSON.stringify(data.user));
+      set({ user: data.user, token: data.token, loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
   logout: () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');

@@ -128,3 +128,26 @@ export async function addLoginLog(email, action, userAgent = '') {
   
   return newLog;
 }
+
+export async function updateUser(email, updates) {
+  const list = await getUsers();
+  const index = list.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
+  
+  if (index === -1) return null;
+  
+  list[index] = { ...list[index], ...updates };
+  memoryUsers = list;
+
+  if (process.env.KV_REDIS_URL) {
+    await kvCall('SET', ['store:users', JSON.stringify(list)]);
+  }
+  
+  try {
+    const filePath = getUsersDbPath();
+    fs.writeFileSync(filePath, JSON.stringify(list, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Users DB write error:', err.message);
+  }
+  
+  return list[index];
+}

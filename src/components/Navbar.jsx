@@ -88,6 +88,7 @@ export default function Navbar() {
                   <span className="user-role">{user?.role}</span>
                 </div>
                 <hr />
+                <Link to="/profile" className="dropdown-item">Profil</Link>
                 <Link to="/orders" className="dropdown-item">Pesanan Saya</Link>
                 <Link to="/wishlist" className="dropdown-item">Favorit</Link>
                 {user?.role === 'admin' && <Link to="/admin" className="dropdown-item">Dashboard</Link>}

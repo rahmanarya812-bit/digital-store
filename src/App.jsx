@@ -14,6 +14,7 @@ import Wishlist from './pages/Wishlist';
 import Orders from './pages/Orders';
 import AdminDashboard from './pages/AdminDashboard';
 import Contact from './pages/Contact';
+import Profile from './pages/Profile';
 import { ProtectedRoute, AdminRoute, GuestRoute } from './middleware/ProtectedRoute';
 import { useEffect } from 'react';
 import { useCartStore } from './store/cartStore';
@@ -62,6 +63,11 @@ export default function App() {
         <Route path="/orders" element={
           <ProtectedRoute>
             <Orders />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         } />
 

@@ -1,0 +1,257 @@
+.profile-page {
+  padding: 4rem 0;
+  min-height: calc(100vh - 200px);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+}
+
+.profile-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.profile-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.profile-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+}
+
+.profile-sidebar {
+  padding: 1.5rem;
+  height: fit-content;
+}
+
+.security-status h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(46, 204, 113, 0.1);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(46, 204, 113, 0.2);
+  margin-bottom: 1rem;
+}
+
+.status-item .status-icon {
+  margin-left: auto;
+  color: #2ecc71;
+  font-size: 1.25rem;
+}
+
+.status-item h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.status-item p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.security-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.profile-main {
+  padding: 2rem;
+}
+
+.profile-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.profile-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-form label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.input-group.disabled input {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.input-note {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+.input-help.warning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e67e22;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+}
+
+.otp-modal {
+  max-width: 400px;
+  width: 90%;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.otp-header {
+  margin-bottom: 2rem;
+}
+
+.otp-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: rgba(108, 99, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  margin: 0 auto 1.5rem;
+}
+
+.otp-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.otp-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.otp-input {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 0.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.btn-full {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .profile-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-form .form-row {
+    grid-template-columns: 1fr;
+  }
+}
