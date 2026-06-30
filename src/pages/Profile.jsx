@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { FiUser, FiPhone, FiLock, FiShield, FiSave, FiAlertCircle, FiCheck, FiX } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
 export default function Profile() {
-  const { user, sendProfileOtp, updateProfile } = useAuthStore();
+  const { user, sendProfileOtp, updateProfile, logout } = useAuthStore();
+  const navigate = useNavigate();
   
   const [name, setName] = useState(user?.name || '');
   const [phone, setPhone] = useState(user?.phone || '');
@@ -77,9 +79,18 @@ export default function Profile() {
     try {
       await updateProfile({ name, phone, otpToken, otp });
       setShowOtpModal(false);
+      
+      if (newPassword) {
+        logout();
+        navigate('/login', { replace: true });
+        // Optionally alert the user so they know why they are on the login page
+        alert('Password berhasil diubah. Silakan login kembali dengan password baru Anda.');
+      } else {
+        setMessage('Profil berhasil diperbarui!');
+      }
+      
       setNewPassword('');
       setOtp('');
-      setMessage('Profil dan password berhasil diperbarui!');
       setLoading(false);
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'OTP tidak valid');
