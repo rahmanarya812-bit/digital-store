@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const user = getAuthUser(req);
   if (!user) return res.status(401).json({ error: 'Authentication required' });
 
-  const products = getProducts();
+  const products = await getProducts();
 
   if (req.method === 'GET') {
     const { id } = req.query || {};

@@ -6,7 +6,20 @@ const getDbPath = () => path.join(process.cwd(), 'api', '_data', 'products.json'
 // Global memory cache to support read-only filesystems (like Vercel)
 let memoryProducts = null;
 
-export const getProducts = () => {
+export const getProducts = async () => {
+  if (process.env.KV_REDIS_URL) {
+    const kvData = await kvCall('GET', ['store:products']);
+    if (kvData) {
+      try {
+        const parsed = JSON.parse(kvData);
+        memoryProducts = parsed;
+        return parsed;
+      } catch (err) {
+        console.error('KV Products Parse Error:', err);
+      }
+    }
+  }
+
   if (memoryProducts) {
     return memoryProducts;
   }
@@ -37,9 +50,13 @@ export const getProducts = () => {
   }
 };
 
-export const saveProducts = (products) => {
+export const saveProducts = async (products) => {
   memoryProducts = products;
   
+  if (process.env.KV_REDIS_URL) {
+    await kvCall('SET', ['store:products', JSON.stringify(products)]);
+  }
+
   try {
     const filePath = getDbPath();
     fs.writeFileSync(filePath, JSON.stringify(products, null, 2), 'utf8');

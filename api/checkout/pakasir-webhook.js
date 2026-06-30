@@ -1,7 +1,7 @@
 import { getOrdersInMem } from '../orders/index.js';
 import { getProducts, saveProducts } from '../_utils/db.js';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -31,7 +31,7 @@ export default function handler(req, res) {
       order.status = 'completed';
       order.date = new Date().toISOString();
 
-      const products = getProducts();
+      const products = await getProducts();
 
       // Decrement stock & extract accounts for each item in the order
       for (const item of order.items) {
@@ -63,7 +63,7 @@ export default function handler(req, res) {
           item.deliveredAccounts = [`ACTV-${Math.floor(Math.random() * 1e9)}-LICS`];
         }
       }
-      saveProducts(products);
+      await saveProducts(products);
       console.log(`[Webhook] Order #${parsedId} successfully marked as completed. Accounts delivered.`);
     }
 

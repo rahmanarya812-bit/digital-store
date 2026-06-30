@@ -1,12 +1,12 @@
 import { getProducts, saveProducts } from '../_utils/db.js';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const products = getProducts();
+  const products = await getProducts();
 
   // POST: Create a product
   if (req.method === 'POST') {
@@ -54,7 +54,7 @@ export default function handler(req, res) {
       isVisible: isVisible !== undefined ? Boolean(isVisible) : true
     };
     products.push(newProduct);
-    saveProducts(products);
+    await saveProducts(products);
     return res.status(201).json({ product: newProduct });
   }
 
@@ -98,7 +98,7 @@ export default function handler(req, res) {
       wholesaleTiers: wholesaleTiers !== undefined ? wholesaleTiers : products[index].wholesaleTiers,
       isVisible: isVisible !== undefined ? Boolean(isVisible) : products[index].isVisible
     };
-    saveProducts(products);
+    await saveProducts(products);
     return res.status(200).json({ product: products[index] });
   }
 
@@ -111,7 +111,7 @@ export default function handler(req, res) {
     if (index === -1) return res.status(404).json({ error: 'Product not found' });
     
     const deleted = products.splice(index, 1);
-    saveProducts(products);
+    await saveProducts(products);
     return res.status(200).json({ success: true, product: deleted[0] });
   }
 
