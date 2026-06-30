@@ -14,6 +14,20 @@ export default async function handler(req, res) {
   if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required' });
   if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
 
+  // Block disposable emails
+  const badDomains = [
+    'yopmail.com', 'temp-mail.org', 'tempmail.com', '10minutemail.com', '10minutemail.net',
+    'mailinator.com', 'guerrillamail.com', 'sharklasers.com', 'getnada.com', 'dispostable.com',
+    'maildrop.cc', 'tempmail.net', 'throwawaymail.com', 'tempmailaddress.com', 'mohmal.com',
+    'minuteinbox.com', 'fakemail.net', 'trashmail.com', 'temp-mail.io', 'dropmail.me',
+    'mailto.plus', 'nada.ltd', 'boximail.com', 'tempmail.ninja', 'tempm.com'
+  ];
+
+  const emailDomain = email.split('@')[1]?.toLowerCase();
+  if (badDomains.includes(emailDomain)) {
+    return res.status(400).json({ error: 'Penggunaan email sementara (disposable email) tidak diizinkan. Harap gunakan email aktif yang valid.' });
+  }
+
   // Check if already registered
   if (await findUserByEmail(email)) {
     return res.status(409).json({ error: 'Email already registered' });
