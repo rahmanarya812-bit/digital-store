@@ -174,13 +174,35 @@
 .user-name {
   font-weight: 600;
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
 }
 
-.user-role {
-  font-size: 0.75rem;
-  color: var(--accent-primary);
-  text-transform: capitalize;
+.user-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  word-break: break-all;
+}
+
+.manage-account-btn {
+  display: block;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.manage-account-btn:hover {
+  background: rgba(108, 99, 255, 0.05);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .user-dropdown hr {

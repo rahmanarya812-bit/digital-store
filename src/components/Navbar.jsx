@@ -85,10 +85,10 @@ export default function Navbar() {
               <div className="user-dropdown glass">
                 <div className="user-info">
                   <span className="user-name">{user?.name}</span>
-                  <span className="user-role">{user?.role}</span>
+                  <span className="user-email">{user?.email}</span>
+                  <Link to="/profile" className="manage-account-btn">Kelola Akun Anda</Link>
                 </div>
                 <hr />
-                <Link to="/profile" className="dropdown-item">Profil</Link>
                 <Link to="/orders" className="dropdown-item">Pesanan Saya</Link>
                 <Link to="/wishlist" className="dropdown-item">Favorit</Link>
                 {user?.role === 'admin' && <Link to="/admin" className="dropdown-item">Dashboard</Link>}
