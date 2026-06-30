@@ -151,3 +151,28 @@ export async function updateUser(email, updates) {
   
   return list[index];
 }
+
+export async function deleteUser(id) {
+  const list = await getUsers();
+  const initialLength = list.length;
+  const filteredList = list.filter(u => String(u.id) !== String(id));
+  
+  if (filteredList.length === initialLength) {
+    throw new Error('User not found');
+  }
+
+  memoryUsers = filteredList;
+
+  if (process.env.KV_REDIS_URL) {
+    await kvCall('SET', ['store:users', JSON.stringify(filteredList)]);
+  }
+  
+  try {
+    const filePath = getUsersDbPath();
+    fs.writeFileSync(filePath, JSON.stringify(filteredList, null, 2), 'utf8');
+  } catch (err) {
+    console.warn('Users DB write error:', err.message);
+  }
+  
+  return true;
+}

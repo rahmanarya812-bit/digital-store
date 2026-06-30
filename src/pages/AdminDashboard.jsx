@@ -226,6 +226,17 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteUser = async (id, name) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus pengguna "${name}"?\nTindakan ini tidak dapat dibatalkan.`)) return;
+    try {
+      await adminService.deleteUser(id);
+      alert('Pengguna berhasil dihapus.');
+      fetchUsersAndLogs();
+    } catch (err) {
+      alert(err.message || 'Gagal menghapus pengguna');
+    }
+  };
+
   useEffect(() => {
     fetchStats();
     fetchProducts();
@@ -1037,6 +1048,7 @@ export default function AdminDashboard() {
                     <th style={{ padding: '1rem' }}>Nama Lengkap</th>
                     <th style={{ padding: '1rem' }}>Email</th>
                     <th style={{ padding: '1rem' }}>Role</th>
+                    <th style={{ padding: '1rem', textAlign: 'center' }}>Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1057,11 +1069,28 @@ export default function AdminDashboard() {
                           {usr.role.toUpperCase()}
                         </span>
                       </td>
+                      <td style={{ padding: '1rem', textAlign: 'center' }}>
+                        {usr.role !== 'admin' && (
+                          <button 
+                            onClick={() => handleDeleteUser(usr.id, usr.name)}
+                            style={{ 
+                              background: 'transparent', 
+                              border: 'none', 
+                              color: 'var(--danger)', 
+                              cursor: 'pointer',
+                              padding: '0.5rem'
+                            }}
+                            title="Hapus Pengguna"
+                          >
+                            <FiTrash size={18} />
+                          </button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                   {usersList.length === 0 && (
                     <tr>
-                      <td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: '#a0aec0' }}>Belum ada data pengguna terdaftar.</td>
+                      <td colSpan="5" style={{ padding: '2rem', textAlign: 'center', color: '#a0aec0' }}>Belum ada data pengguna terdaftar.</td>
                     </tr>
                   )}
                 </tbody>
