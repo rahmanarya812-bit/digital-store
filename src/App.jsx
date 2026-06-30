@@ -10,6 +10,8 @@ import Checkout from './pages/Checkout';
 import CheckoutSimulation from './pages/CheckoutSimulation';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Wishlist from './pages/Wishlist';
 import Orders from './pages/Orders';
 import AdminDashboard from './pages/AdminDashboard';
@@ -50,6 +52,16 @@ export default function App() {
         <Route path="/register" element={
           <GuestRoute>
             <Register />
+          </GuestRoute>
+        } />
+        <Route path="/forgot-password" element={
+          <GuestRoute>
+            <ForgotPassword />
+          </GuestRoute>
+        } />
+        <Route path="/reset-password" element={
+          <GuestRoute>
+            <ResetPassword />
           </GuestRoute>
         } />
 

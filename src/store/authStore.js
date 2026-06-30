@@ -84,6 +84,44 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  googleLogin: async (name, email) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.googleLogin(name, email);
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_user', JSON.stringify(data.user));
+      set({ user: data.user, token: data.token, isLoggedIn: true, loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
+  forgotPassword: async (email) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.forgotPassword(email);
+      set({ loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
+  resetPassword: async (token, key, newPassword) => {
+    set({ loading: true, error: null });
+    try {
+      const data = await authService.resetPassword(token, key, newPassword);
+      set({ loading: false });
+      return data;
+    } catch (err) {
+      set({ loading: false, error: err.message });
+      throw err;
+    }
+  },
+
   logout: () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('auth_user');
