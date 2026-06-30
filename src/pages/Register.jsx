@@ -24,10 +24,25 @@ export default function Register() {
     }
   }, [isLoggedIn, navigate, clearError]);
 
+  const validatePassword = (pwd) => {
+    if (pwd.length < 8) return "Password minimal 8 karakter";
+    if (!/^[A-Z]/.test(pwd)) return "Password wajib diawali dengan huruf besar";
+    if (!/\d/.test(pwd)) return "Password wajib mengandung angka";
+    if (!/[@$!%*?&#\-_]/.test(pwd)) return "Password wajib mengandung simbol (@$!%*?&#-_)";
+    return null;
+  };
+
   const handleSendOtp = async (e) => {
     e.preventDefault();
     clearError();
     setEmailSentError('');
+    
+    const pwdError = validatePassword(password);
+    if (pwdError) {
+      useAuthStore.setState({ error: pwdError });
+      return;
+    }
+
     try {
       const data = await sendOtp(name, email, password);
       setOtpToken(data.otpToken);
@@ -96,7 +111,7 @@ export default function Register() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">Password (min. 6 characters)</label>
+                <label htmlFor="password">Password</label>
                 <input
                   type="password"
                   id="password"
@@ -105,6 +120,9 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                 />
+                <small style={{ color: '#a0aec0', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                  Min 8 karakter, wajib diawali huruf besar, serta mengandung angka & simbol
+                </small>
               </div>
 
               <button type="submit" className="btn btn-primary w-full" disabled={loading}>

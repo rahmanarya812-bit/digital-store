@@ -19,6 +19,14 @@ export default function Profile() {
   const [otp, setOtp] = useState('');
   const [simulatedOtp, setSimulatedOtp] = useState(null);
 
+  const validatePassword = (pwd) => {
+    if (pwd.length < 8) return "Password minimal 8 karakter";
+    if (!/^[A-Z]/.test(pwd)) return "Password wajib diawali dengan huruf besar";
+    if (!/\d/.test(pwd)) return "Password wajib mengandung angka";
+    if (!/[@$!%*?&#\-_]/.test(pwd)) return "Password wajib mengandung simbol (@$!%*?&#-_)";
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -28,8 +36,9 @@ export default function Profile() {
       return setError('Nama tidak boleh kosong');
     }
 
-    if (newPassword && newPassword.length < 6) {
-      return setError('Password baru minimal 6 karakter');
+    if (newPassword) {
+      const pwdError = validatePassword(newPassword);
+      if (pwdError) return setError(pwdError);
     }
 
     setLoading(true);
@@ -168,6 +177,9 @@ export default function Profile() {
                     <FiAlertCircle /> Anda akan diminta memasukkan kode OTP untuk mengonfirmasi perubahan sandi.
                   </p>
                 )}
+                <small style={{ color: '#a0aec0', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                  Min 8 karakter, wajib diawali huruf besar, serta mengandung angka & simbol
+                </small>
               </div>
 
               <div className="form-actions">
