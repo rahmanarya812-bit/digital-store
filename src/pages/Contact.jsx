@@ -112,7 +112,7 @@ export default function Contact() {
           <h3>Hubungi via WhatsApp</h3>
           <p>Butuh bantuan cepat atau pertanyaan seputar produk? Hubungi kami langsung untuk respon instan.</p>
           <a 
-            href="https://wa.me/6281234567890" 
+            href="https://wa.me/6285607492894" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="btn whatsapp-direct-btn"
